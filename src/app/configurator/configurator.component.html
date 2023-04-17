@@ -1,0 +1,31 @@
+<section class="configurator">
+  <div class="configurator-wrap">
+    <div class="configurator-spec main-back main-stroke"></div>
+    <div class="configurator-main main-back main-stroke">
+      <div class="configurator-main-name">
+        <h4><text textInit="Название сборки"></text></h4>
+      </div>
+      <div
+        class="configurator-main-case"
+        [style.backgroundImage]="'url(../../assets/case.png)'"
+      >
+        <img src="../../assets/chevron.svg" alt="" />
+        <div></div>
+        <img src="../../assets/chevron.svg" alt="" />
+      </div>
+      <div class="configurator-main-list">
+        <div class="configurator-main-list__item">
+          <h6>CPU</h6>
+          <h6>AMD Epyc 7262 N</h6>
+        </div>
+      </div>
+
+      <div class="configurator-main-cost text-light">
+        <h6>Средняя цена</h6>
+        <h5>1200$</h5>
+      </div>
+      <app-button [fullWidth]="true"><text textInit="создать"></text></app-button>
+    </div>
+    <app-deck></app-deck>
+  </div>
+</section>

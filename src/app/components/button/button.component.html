@@ -1,0 +1,9 @@
+<button (click)="onClick" class="button" [style.width]="fullWidth ? '100%' : 'auto'">
+    <div class="button-corner">
+        <div class="button-corner-inner"></div>
+    </div>
+    <span class="button-label"><ng-content></ng-content></span>
+    <div class="button-corner">
+        <div class="button-corner-inner"></div>
+    </div>
+</button>

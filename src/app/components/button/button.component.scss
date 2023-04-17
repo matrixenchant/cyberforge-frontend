@@ -1,0 +1,58 @@
+.button {
+  position: relative;
+  padding: 15px 25px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  font-weight: bold;
+  background-color: rgba(white, 0.1);
+  cursor: pointer;
+  transition: 0.4s ease;
+
+  &-corner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 50%;
+    width: 20%;
+    max-width: 50px;
+
+    overflow: hidden;
+    pointer-events: none;
+    transition: 0.6s ease;
+
+    &-inner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 150%;
+      height: 150%;
+      box-sizing: border-box;
+      border-radius: 5px;
+
+      border: 2px solid white;
+    }
+
+    &:last-child {
+      top: auto;
+      left: auto;
+      right: 0;
+      bottom: 0;
+      .button-corner-inner {
+        top: auto;
+        left: auto;
+        right: 0;
+        bottom: 0;
+      }
+    }
+  }
+
+  &:hover {
+    .button-corner {
+        width: 15%;
+        max-width: 30px;
+
+        height: 70%;
+    }
+    background-color: rgba(white, 0.2);
+  }
+}

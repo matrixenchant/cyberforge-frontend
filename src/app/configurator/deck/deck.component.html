@@ -1,0 +1,11 @@
+<ng-template ngFor let-card [ngForOf]="deck" let-i="index">
+  <app-card
+    [index]="i"
+    (mouseEnter)="cardMouseEnter($event, i)"
+    (mouseLeave)="cardMouseLeave($event, i)"
+    (mouseUp)="cardMouseUp($event, i)"
+    (mouseDown)="cardMouseDown($event, i)"
+    [card]="card"
+    [accessDragging]="accessDragging"
+  ></app-card>
+</ng-template>
