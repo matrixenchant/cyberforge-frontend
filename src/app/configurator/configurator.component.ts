@@ -1,27 +1,44 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { NotificationService } from '../services/notification.service';
 import { DeckComponent } from './deck/deck.component';
-
-interface CComponents {
-  type: string;
-  label: string
-  component: null | PCComponent
-}
 
 @Component({
   selector: 'app-configurator',
   templateUrl: './configurator.component.html',
   styleUrls: ['./configurator.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class ConfiguratorComponent implements OnInit {
   @ViewChild(DeckComponent) deckComponent: DeckComponent | undefined;
+
+  showFilter: boolean = false;
+  filterFields: FilterField[] = [
+    {
+      name: 'Название',
+      value: 'name',
+      size: '1fr'
+    },
+    {
+      name: 'Цена от',
+      value: 'costMin',
+      size: '0.5fr',
+      type: 'number'
+    },
+    {
+      name: 'Цена до',
+      value: 'costMax',
+      size: '0.5fr'
+    },
+  ];
+
+  name: string = '';
 
   assembly = {
     case: {},
     name: '',
   };
 
-  components: CComponents[] = [
+  types: PCTypes[] = [
     { type: 'cpu', label: 'CPU', component: null },
     { type: 'gpu', label: 'Видеокарта', component: null },
     { type: 'motherboard', label: 'Мат. плата', component: null },
@@ -31,90 +48,125 @@ export class ConfiguratorComponent implements OnInit {
   ];
   activeType: string | null = null;
 
-  cards: PCComponent[] = [
+  components: PCComponent[] = [
     {
       id: 1,
-      label: 'AMD Epyc 7262 N',
-      hero: '../../../assets/hero.png',
+      name: 'AMD Epyc 7262 N',
+      image: '../../../assets/hero.png',
       type: 'cpu',
-      power: 0,
+      rating: 0,
+      cost: 0,
       spec: [
         {
-          label: 'Техпроцесс',
-          value: '5 нм'
+          name: 'Техпроцесс',
+          value: '5 нм',
         },
         {
-          label: 'Макс. тактовая частота',
-          value: '4.5 ГГц'
+          name: 'Макс. тактовая частота',
+          value: '4.5 ГГц',
         },
         {
-          label: 'Ядер/потоков',
-          value: '16/32'
+          name: 'Ядер/потоков',
+          value: '16/32',
         },
-      ]
+      ],
     },
     {
       id: 2,
-      label: 'CPU 2',
-      hero: '../../../assets/hero.png',
+      name: 'CPU 2',
+      image: '../../../assets/hero.png',
       type: 'cpu',
     },
     {
       id: 3,
-      label: 'CPU 3',
-      hero: '../../../assets/hero.png',
+      name: 'CPU 3',
+      image: '../../../assets/hero.png',
       type: 'cpu',
     },
     {
       id: 4,
-      label: 'CPU 4',
-      hero: '../../../assets/hero.png',
+      name: 'CPU 4',
+      image: '../../../assets/hero.png',
       type: 'cpu',
     },
     {
       id: 5,
-      label: 'CPU 5',
-      hero: '../../../assets/hero.png',
+      name: 'CPU 5',
+      image: '../../../assets/hero.png',
       type: 'cpu',
     },
 
     {
       id: 6,
-      label: 'AMD Epyc 7262 N',
-      hero: '../../../assets/hero.png',
+      name: 'AMD Epyc 7262 N',
+      image: '../../../assets/hero.png',
       type: 'ram',
     },
     {
       id: 7,
-      label: 'ram 2',
-      hero: '../../../assets/hero.png',
+      name: 'ram 2',
+      image: '../../../assets/hero.png',
       type: 'ram',
     },
     {
       id: 8,
-      label: 'ram 3',
-      hero: '../../../assets/hero.png',
+      name: 'ram 3',
+      image: '../../../assets/hero.png',
       type: 'ram',
     },
     {
       id: 9,
-      label: 'ram 4',
-      hero: '../../../assets/hero.png',
+      name: 'ram 4',
+      image: '../../../assets/hero.png',
       type: 'ram',
     },
     {
       id: 10,
-      label: 'ram 5',
-      hero: '../../../assets/hero.png',
+      name: 'ram 5',
+      image: '../../../assets/hero.png',
       type: 'ram',
+    },
+    {
+      id: 11,
+      name: 'ram 5',
+      image: '../../../assets/hero.png',
+      type: 'ram',
+    },
+    {
+      id: 12,
+      name: 'ram 5',
+      image: '../../../assets/hero.png',
+      type: 'cpu',
+    },
+    {
+      id: 13,
+      name: 'ram 5',
+      image: '../../../assets/hero.png',
+      type: 'cpu',
     },
   ];
 
-  deck = [] as any
+  deck = [] as any;
 
-  constructor() {}
+  constructor(public notification: NotificationService) {}
 
   ngOnInit(): void {}
+
+  saveAssembly() {
+    this.notification.notify('Сборка сохранена');
+  }
+
+  onSearch(data: any) {
+    console.log('filter', data);
+    const type = this.types.filter((x) => x.type === this.activeType)[0];
+  
+    
+    this.deckComponent?.changeDeck(
+      this.components.filter(
+        (x: any) => x.type === type.type && x.id !== type?.component?.id && x.name == data.name
+      )
+    );
+  }
 
   getAvgCost() {
     if (!this.components.length) return null;
@@ -124,24 +176,34 @@ export class ConfiguratorComponent implements OnInit {
   }
 
   getChoicesComponents() {
-    return this.components.filter(x => x.component !== null).map(x => x.component) as any
+    return this.types
+      .filter((x) => x.component !== null)
+      .map((x) => x.component) as any;
   }
 
   addComponentEvent(comp: any) {
-    this.components = this.components.map(x => x.type == comp.type ? {...x, component: comp} : x)
+    this.types = this.types.map((x) =>
+      x.type == comp.type ? { ...x, component: comp } : x
+    );
     if (this.deckComponent?.deck)
-    this.deckComponent.deck = this.cards.filter((x: any) => x.type === this.activeType && x.id !== comp?.id)
+      this.deckComponent.deck = this.components.filter(
+        (x: any) => x.type === this.activeType && x.id !== comp?.id
+      );
   }
 
   getTypeLabel(type: string) {
-    return this.components.filter(x => x.type === type)[0].label;
+    return this.types.filter((x) => x.type === type)[0].label;
   }
 
   changeType(type: string) {
     if (type === this.activeType) return;
     this.activeType = type;
-    const component = this.components.filter(x => x.type === type)[0].component
+    const component = this.types.filter((x) => x.type === type)[0].component;
 
-    this.deckComponent?.changeDeck(this.cards.filter((x: any) => x.type === type && x.id !== component?.id));
+    this.deckComponent?.changeDeck(
+      this.components.filter(
+        (x: any) => x.type === type && x.id !== component?.id
+      )
+    );
   }
 }

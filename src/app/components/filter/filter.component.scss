@@ -1,0 +1,12 @@
+.filter {
+    display: flex;
+    padding: 10px 20px;
+    align-items: center;
+    column-gap: 30px;
+
+    &-fields {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        column-gap: 10px;
+    }
+}

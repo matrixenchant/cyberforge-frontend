@@ -27,7 +27,7 @@ export class MatrixTransitionService {
     this.show()
     setTimeout(() => {
       this.router.navigate(route);
-    }, 580);
+    }, 700);
     setTimeout(() => {
       this.hide()
     }, 2000);

@@ -1,0 +1,22 @@
+.notification__item {
+  margin-top: 10px;
+
+  padding: 20px;
+  background-color: rgba($color: #000000, $alpha: 0.5);
+
+  animation: showNotification 0.5s ease;
+  @keyframes showNotification {
+    from {
+      transform: translateX(150%);
+    }
+  }
+
+  &.hide {
+    animation: hideNotification 0.5s ease;
+    @keyframes hideNotification {
+      to {
+        transform: translateX(150%);
+      }
+    }
+  }
+}

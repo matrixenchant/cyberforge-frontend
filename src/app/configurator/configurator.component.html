@@ -1,19 +1,34 @@
+<app-breadcrumb>Конфигуратор</app-breadcrumb>
+
 <section class="configurator">
   <div class="configurator-wrap">
     <div class="configurator-spec main-back main-stroke">
-      <div [ngClass]="{'configurator-spec__item--active': activeType == spec.type}" class="configurator-spec__item" *ngFor="let spec of components" (click)="changeType(spec.type)">
-        <div class="configurator-spec__item-label"><h5>{{spec.label}}</h5></div>
+      <app-filter *ngIf="activeType !== null" [fields]="filterFields" (onSearch)="onSearch($event)"></app-filter>
+
+      <div [ngClass]="{'configurator-spec__item--active': activeType == item.type}" class="configurator-spec__item secondary-back" *ngFor="let item of types" (click)="changeType(item.type)">
+        <div class="configurator-spec__item-label"><h5>{{item.label}}</h5></div>
         <div class="configurator-spec__item-preview">
-          <svg *ngIf="spec.component == null" width="46" height="41" viewBox="0 0 46 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg *ngIf="item.component == null" width="46" height="41" viewBox="0 0 46 41" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path opacity="0.5" d="M30.8799 0.346191C34.6654 0.346191 37.6296 0.709635 39.7725 1.43652C41.9248 2.15397 43.4541 3.34342 44.3604 5.00488C45.276 6.6569 45.7339 8.93197 45.7339 11.8301C45.7339 14.5677 45.2005 16.6729 44.1338 18.1455C43.0671 19.6182 41.4953 20.6943 39.4185 21.374C37.3511 22.0443 34.4294 22.6107 30.6533 23.0732C28.9635 23.2715 27.6891 23.5075 26.8301 23.7812C25.9805 24.055 25.4377 24.3618 25.2017 24.7017C24.9657 25.0321 24.8477 25.4757 24.8477 26.0327V28.1851H15.1621V24.4751C15.1621 19.6512 18.6455 16.7295 25.6123 15.71C27.1699 15.5023 28.5671 15.3135 29.8037 15.1436C31.0498 14.9736 32.1213 14.7707 33.0181 14.5347C33.9243 14.2987 34.6559 13.9588 35.2129 13.5151C35.7699 13.0715 36.0483 12.5098 36.0483 11.8301C36.0483 10.4518 35.3639 9.52669 33.9951 9.05469C32.6263 8.58268 30.2191 8.34668 26.7734 8.34668H19.3394C16.9416 8.34668 15.0819 8.52604 13.7603 8.88477C12.4386 9.23405 11.5229 9.74382 11.0132 10.4141C10.5129 11.0749 10.2533 11.9339 10.2344 12.9912H0.548828C0.548828 9.47005 1.7194 6.48226 4.06055 4.02783C6.40169 1.5734 10.1022 0.346191 15.1621 0.346191H30.8799ZM15.1621 41V31.3145H24.8477V41H15.1621Z" fill="white"/>
           </svg>
-          <app-card *ngIf="spec.component != null" [card]="spec.component"></app-card>
+          <app-card *ngIf="item.component != null" [card]="item.component"></app-card>
         </div>
       </div>
     </div>
     <div class="configurator-main main-back main-stroke">
       <div class="configurator-main-name">
-        <h4><glitch>Название сборки</glitch></h4>
+        <div class="input">
+          <input
+            id="configurator-name"
+            required
+            type="text"
+            [(ngModel)]="name"
+            name="name"
+          />
+          <div class="input-active">
+            <label for="configurator-name">Название</label> <span></span>
+          </div>
+        </div>
       </div>
       <app-case-img url="../../assets/case.png"></app-case-img>
       <div class="configurator-main-list">
@@ -27,7 +42,7 @@
         <h6>Средняя цена</h6>
         <h5>{{getAvgCost()}}$</h5>
       </div>
-      <app-button><glitch>создать</glitch></app-button>
+      <app-button (onClick)="saveAssembly()"><glitch>создать</glitch></app-button>
     </div>
     <app-deck (addComponentEvent)="addComponentEvent($event)"></app-deck>
   </div>

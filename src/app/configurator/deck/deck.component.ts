@@ -27,15 +27,26 @@ export class DeckComponent implements OnInit, OnChanges {
     height: 418,
   };
 
+  deckMid: number = 0;
+
+  nextMid() {
+    this.deckMid += 1;
+    this.placeCards();
+  }
+  prevMid() {
+    this.deckMid -= 1;
+    this.placeCards();
+  }
+
   constructor(private render: Renderer2) {}
 
   @Output()
   addComponentEvent: EventEmitter<any> = new EventEmitter<any>();
 
   ngOnChanges(changes: SimpleChanges): void {
-      if (changes['deck']) {
-        console.log(changes['deck']);
-      }
+    if (changes['deck']) {
+      console.log(changes['deck']);
+    }
   }
 
   ngOnInit(): void {
@@ -46,19 +57,23 @@ export class DeckComponent implements OnInit, OnChanges {
 
   changeDeck(newDeck: any) {
     console.log('change deck', newDeck);
-    
+
+    this.deckMid =
+    Math.round(this.deck.length / 2) -
+    1 +
+    (this.deck.length % 2 == 0 ? 0.5 : 0);
 
     gsap.to('.card--deck', {
       duration: 0.4,
       y: window.innerHeight * 1.2,
       stagger: 0.05,
       onComplete: () => {
-        this.deck = newDeck
+        this.deck = newDeck;
         setTimeout(() => {
-          this.placeCards(null, true)
+          this.placeCards(null, true);
         }, 10);
-      }
-    })
+      },
+    });
   }
 
   placeCards(index: number | null = null, isFrom: boolean = false) {
@@ -75,7 +90,7 @@ export class DeckComponent implements OnInit, OnChanges {
       if (index !== null && index !== i) return;
 
       const isEven = this.deck.length % 2 == 0;
-      const midI = Math.round(this.deck.length / 2) - 1 + (isEven ? 0.5 : 0);
+      const midI = this.deckMid;
 
       let coords = {
         x: centerX,
@@ -162,9 +177,9 @@ export class DeckComponent implements OnInit, OnChanges {
         })
         .then(() => {
           this.addComponentEvent.emit(this.deck[i]);
-          
+
           console.log(this.deck);
-          
+
           //this.deck = this.deck.filter((x: any, j: number) => j !== i);
         });
       setTimeout(() => {

@@ -1,0 +1,23 @@
+.home-nav__item {
+  position: relative;
+  width: 250px;
+  background: none;
+  cursor: pointer;
+
+  transform-style: preserve-3d;
+  transform: perspective(1000px);
+
+  h4 {
+    position: relative;
+    z-index: 2;
+    transform: translateZ(15px);
+  }
+
+  img {
+    position: absolute;
+    width: 150%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}

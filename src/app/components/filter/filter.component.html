@@ -1,0 +1,18 @@
+<div class="filter secondary-back">
+    <h5>Фильтр</h5>
+    <div class="filter-fields" [style.gridTemplateColumns]="getFieldsGridStyle()">
+        <div class="input" *ngFor="let field of fields">
+            <input
+              [id]="'filter-'+field.value"
+              required
+              [type]="field.type || 'text'"
+              [(ngModel)]="data[field.value]"
+              [name]="field.value"
+            />
+            <div class="input-active">
+              <label for="configurator-name">{{field.label}}</label> <span></span>
+            </div>
+          </div>
+    </div>
+    <app-button (onClick)="onSearch.emit(data)">Поиск</app-button>
+</div>

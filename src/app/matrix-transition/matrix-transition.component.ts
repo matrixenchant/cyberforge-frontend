@@ -20,8 +20,13 @@ export class MatrixTransitionComponent implements OnInit {
 
     const pixels: Pixel[] = [];
     const num = 100;
-    const trails = 30;
-    const duration = 1500;
+    const trails = 35;
+
+    const getAplha = (j: number) => {
+      if (j < trails*.10) return (j / (trails*.10));
+      if (j > trails*.75) return 1 - ((j - trails*.75) / (trails*.25));
+      return 1;
+    }
 
     const width = window.innerWidth / num;
     for (let i = 0; i < num; i++) {
@@ -36,7 +41,7 @@ export class MatrixTransitionComponent implements OnInit {
           alphaSpeed: 0,
           hasTrail: false,
           size: width + 1,
-          alpha: j > trails * 0.75 ? 1 - ((j - 20) / (trails*.25)) * 0.75 : 1,
+          alpha: getAplha(j),
         });
         pixels.push(pixel);
       }
@@ -109,7 +114,7 @@ class Pixel {
 
   draw(): void {
     const _ = (val: number) =>
-      Math.round(Math.random() * (2 + val - (val - 2)) + (val - 2));
+      Math.round(Math.random() * (3 + val - (val - 3)) + (val - 3));
 
     this.context.fillStyle = `rgba(${_(78)}, ${_(121)}, ${_(128)}, ${
       this.alpha

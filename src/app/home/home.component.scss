@@ -4,4 +4,13 @@
     background-image: url('../../assets/backgrounds/home.png');
     background-size: cover;
     background-position: center;
+
+    &-nav {
+        padding-top: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        margin: 0 auto;
+        width: 90%;
+    }
 }

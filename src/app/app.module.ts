@@ -17,6 +17,10 @@ import { ConfiguratorComponent } from './configurator/configurator.component';
 import { DeckComponent } from './configurator/deck/deck.component';
 import { HomeComponent } from './home/home.component';
 import { MatrixTransitionComponent } from './matrix-transition/matrix-transition.component';
+import { HomeNavComponent } from './home/home-nav/home-nav.component';
+import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
+import { NotificationComponent } from './components/notification/notification.component';
+import { FilterComponent } from './components/filter/filter.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +37,10 @@ import { MatrixTransitionComponent } from './matrix-transition/matrix-transition
     AuthComponent,
     HomeComponent,
     MatrixTransitionComponent,
+    HomeNavComponent,
+    BreadcrumbComponent,
+    NotificationComponent,
+    FilterComponent,
   ],
   imports: [AngularTiltModule, BrowserModule, AppRoutingModule, FormsModule],
   providers: [],
