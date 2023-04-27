@@ -1,0 +1,17 @@
+.matrix-transition {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+
+  opacity: 1;
+  transition: opacity 1s, visibility 0s 1s;
+}
+
+.matrix-transition.show-matrix-transition {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 1s;
+}

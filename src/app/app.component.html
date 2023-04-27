@@ -1,3 +1,5 @@
 <div class="logo"><img src="../assets/logo.svg" alt="CyberForge"></div>
 
 <router-outlet></router-outlet>
+
+<app-matrix-transition *ngIf="matrixTransitionService.getStatus()"></app-matrix-transition>

@@ -1,4 +1,13 @@
-import { Component, Input, OnInit, Renderer2 } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  Renderer2,
+  SimpleChanges,
+} from '@angular/core';
 import gsap from 'gsap';
 
 @Component({
@@ -6,30 +15,9 @@ import gsap from 'gsap';
   templateUrl: './deck.component.html',
   styleUrls: ['./deck.component.scss'],
 })
-export class DeckComponent implements OnInit {
+export class DeckComponent implements OnInit, OnChanges {
   @Input()
-  deck = [
-    {
-      label: 'Карта 1',
-      hero: '../../../assets/hero.png',
-    },
-    {
-      label: 'Карта 2',
-      hero: '../../../assets/hero.png',
-    },
-    {
-      label: 'Карта 3',
-      hero: '../../../assets/hero.png',
-    },
-    {
-      label: 'Карта 4',
-      hero: '../../../assets/hero.png',
-    },
-    {
-      label: 'Карта 5',
-      hero: '../../../assets/hero.png',
-    },
-  ];
+  deck: PCComponent[] = [];
 
   accessDragging = false;
   isDragging = false;
@@ -41,10 +29,36 @@ export class DeckComponent implements OnInit {
 
   constructor(private render: Renderer2) {}
 
+  @Output()
+  addComponentEvent: EventEmitter<any> = new EventEmitter<any>();
+
+  ngOnChanges(changes: SimpleChanges): void {
+      if (changes['deck']) {
+        console.log(changes['deck']);
+      }
+  }
+
   ngOnInit(): void {
     this.render.listen('window', 'load', () => {
       this.placeCards(null, true);
     });
+  }
+
+  changeDeck(newDeck: any) {
+    console.log('change deck', newDeck);
+    
+
+    gsap.to('.card--deck', {
+      duration: 0.4,
+      y: window.innerHeight * 1.2,
+      stagger: 0.05,
+      onComplete: () => {
+        this.deck = newDeck
+        setTimeout(() => {
+          this.placeCards(null, true)
+        }, 10);
+      }
+    })
   }
 
   placeCards(index: number | null = null, isFrom: boolean = false) {
@@ -57,10 +71,12 @@ export class DeckComponent implements OnInit {
     const centerX = spec.x + spec.width / 2 - this.cardRect.width / 2;
     const bottom = window.innerHeight - this.cardRect.height * 0.9;
 
-    this.deck.map((card, i) => {
+    this.deck.map((card: any, i: number) => {
       if (index !== null && index !== i) return;
 
-      const midI = Math.round(this.deck.length / 2) - 1;
+      const isEven = this.deck.length % 2 == 0;
+      const midI = Math.round(this.deck.length / 2) - 1 + (isEven ? 0.5 : 0);
+
       let coords = {
         x: centerX,
         y: bottom,
@@ -95,11 +111,11 @@ export class DeckComponent implements OnInit {
   }
 
   cardMouseEnter(e: MouseEvent, i: number) {
-    if (this.isDragging) return;
+    if (this.isDragging || this.isDropping) return;
 
     setTimeout(() => {
       this.accessDragging = true;
-    }, 400);
+    }, 200);
 
     const _ = (s: string) => document.querySelector(s);
     const midI = Math.round(this.deck.length / 2) - 1;
@@ -122,7 +138,7 @@ export class DeckComponent implements OnInit {
       });
   }
   cardMouseLeave(e: MouseEvent, i: number) {
-    if (this.isDropping) return
+    if (this.isDropping) return;
     this.placeCards();
   }
   cardMouseDown(e: MouseEvent, i: number) {
@@ -136,18 +152,25 @@ export class DeckComponent implements OnInit {
     const rect = main?.getBoundingClientRect();
     if (rect && main?.classList.contains('active')) {
       this.isDropping = true;
-      gsap.to(`.card-${i}`, {
-        x: rect.x + rect.width / 2 - this.cardRect.width / 2,
-        y: rect.y + rect.height / 2 - this.cardRect.height / 2,
-        opacity: 0,
-        scale: 0,
-        pointerEvents: 'none'
-      });
+      gsap
+        .to(`.card-${i}`, {
+          x: rect.x + rect.width / 2 - this.cardRect.width / 2,
+          y: rect.y + rect.height / 2 - this.cardRect.height / 2,
+          opacity: 0,
+          scale: 0,
+          pointerEvents: 'none',
+        })
+        .then(() => {
+          this.addComponentEvent.emit(this.deck[i]);
+          
+          console.log(this.deck);
+          
+          //this.deck = this.deck.filter((x: any, j: number) => j !== i);
+        });
       setTimeout(() => {
-        this.deck = this.deck.filter((x, j) => j !== i)
-        this.placeCards()
-      }, 400);
-      
+        this.placeCards();
+        this.isDropping = false;
+      }, 800);
     } else {
       this.placeCards();
     }

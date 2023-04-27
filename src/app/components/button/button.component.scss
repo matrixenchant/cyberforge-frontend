@@ -1,9 +1,11 @@
 .button {
   position: relative;
+  width: 100%;
   padding: 15px 25px;
   border-radius: 5px;
   text-transform: uppercase;
   font-weight: bold;
+  color: white;
   background-color: rgba(white, 0.1);
   cursor: pointer;
   transition: 0.4s ease;

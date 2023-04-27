@@ -9,16 +9,23 @@ import gsap from 'gsap';
 export class CardComponent implements OnInit {
 
   @Input()
-  card = {
-    label: '',
-    hero: ''
+  card: PCComponent | null = {
+    id: 0,
+    label: 'Карта',
+    hero: '../../assets/hero.png',
+    type: 'cpu',
+    power: 0,
+    spec: []
   };
 
   @Input()
   accessDragging = false;
 
   @Input()
-  index = 0
+  deckClass = '';
+
+  @Input()
+  index: number | null = null;
 
   @Output()
   mouseEnter: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();

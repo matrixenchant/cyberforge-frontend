@@ -1,73 +1,97 @@
 .card {
+  &--deck {
     position: absolute;
     top: 0;
     left: 0;
     padding: 20px;
     user-select: none;
     transform: scale(0.95) translate(-999px, -999px);
+  }
 
-    &_rotate {
-        transition: 0.4s ease;
+  &_rotate {
+    transition: 0.4s ease;
+  }
+
+  &-inner {
+    position: relative;
+    z-index: 2;
+    width: 260px;
+    height: 360px;
+    transform: perspective(1000px);
+    padding: 20px;
+    color: white;
+    box-shadow: 0 0 0.1rem #fff, 0 0 1rem #275f67, inset 0 0 0.5rem #275f67;
+
+    transform-style: preserve-3d;
+    transform-origin: center;
+
+    display: flex;
+    flex-direction: column;
+
+    &-decor {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+    &-label {
+      margin-top: 8px;
+      margin-left: 60px;
+    }
+    &-hero {
+      margin-top: 20px;
+
+      width: 100%;
+      height: 120px;
+      object-fit: contain;
+      object-position: center;
+      pointer-events: none;
+
+      transition: 0.4s ease;
+      transform: translateZ(0px);
+    }
+    &-power {
+      margin-top: 10px;
+    }
+    &-price {
+      margin-top: 10px;
+
+      font-size: 1.25em;
+      text-align: center;
+      font-family: "QORE";
+    }
+    &-spec {
+      margin-top: auto;
+
+      &__item {
+        margin-top: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        h6:first-child {
+          font-weight: 400;
+          font-size: 12px;
+          width: 50%;
+        }
+        h6:last-child {
+          text-align: right;
+        }
+      }
     }
 
-    &-inner {
-        position: relative;
-        z-index: 2;
-        width: 260px;
-        height: 360px;
-        transform: perspective(1000px);
-        padding: 20px;
-        color: white;
-        box-shadow:
-        0 0 .1rem #fff,
-        0 0 1rem #275F67,
-        inset 0 0 .5rem #275F67;
-
-        transform-style: preserve-3d;
-        transform-origin: center;
-
-        &-decor {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            pointer-events: none;
-        }
-        &-label {
-            margin-top: 8px;
-            margin-left: 60px;
-        }
-        &-hero {
-            margin-top: 20px;
-
-            width: 100%;
-            height: 120px;
-            object-fit: contain;
-            object-position: center;
-            pointer-events: none;
-
-            transition: 0.4s ease;
-            transform: translateZ(0px);
-        }
-        &-price {
-            margin-top: 20px;
-
-            font-size: 1.25em;
-            text-align: center;
-            font-family: 'QORE';
-        }
-
-        &:hover {
-            .card-inner-hero {
-                transform: translateZ(50px);
-            }
-        }
+    &:hover {
+      .card-inner-hero {
+        transform: translateZ(50px);
+      }
     }
+  }
 
-    &-outer {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
+  &-outer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 }

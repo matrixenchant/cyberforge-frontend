@@ -1,119 +1,136 @@
 .configurator {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-image: url("../../assets/backgrounds/configurator.png");
+  overflow: hidden;
+
+  &-wrap {
+    padding: 100px;
+    display: grid;
+    grid-template-areas:
+      "spec spec spec spec main main main"
+      "spec spec spec spec main main main"
+      "null null null null main main main"
+      "null null null null main main main";
+
+    column-gap: 40px;
+    row-gap: 40px;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(4, 16vh);
+  }
+
+  &-spec {
+    grid-area: spec;
+    padding: 30px;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 20px;
+    column-gap: 30px;
+
+    &__item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 2px solid #000000;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      transition: 0.4s ease;
+
+      &:hover {
+        background-color: rgba(21, 139, 205, 0.15);
+      }
+
+      &--active {
+        cursor: auto;
+        background: linear-gradient(284.64deg, #28CBFF 6.42%, rgba(21, 139, 205, 0.15) 90.75%);
+      }
+
+      &-preview {
+        .card {
+          width: 70px;
+          height: 10px;
+          &_rotate {
+            transform-origin: top left;
+            transform: scale(0.25) translate(-50%, -44%);
+            transition: 0.5s ease;
+          }
+
+          &:hover {
+            .card_rotate {
+              transform: scale(0.8) translate(-50%, -44%);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &-main {
     position: relative;
-    width: 100%;
-    height: 100vh;
-    background-image: url('../../assets/backgrounds/configurator.png');
-    overflow: hidden;
+    grid-area: main;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    color: white;
 
-    &-wrap {
-        padding: 100px;
-        display: grid;
-        grid-template-areas:
-        'spec spec spec spec main main main'
-        'spec spec spec spec main main main'
-        'null null null null main main main'
-        'null null null null main main main';
-
-        column-gap: 40px;
-        row-gap: 40px;
-        grid-template-columns: repeat(5, 1fr);
-        grid-template-rows: repeat(4, 16vh);
+    .case-img {
+      margin: 0 auto;
+      margin-top: 10%;
+    
+      width: 90%;
     }
 
-    &-spec {
-        grid-area: spec;
-    }
+    &-list {
+      margin-top: 10%;
 
-    &-main {
-        position: relative;
-        grid-area: main;
-        padding: 20px;
+      &__item {
+        margin-top: 5px;
         display: flex;
-        flex-direction: column;
-        color: white;
-
-        &-case {
-            position: relative;
-            margin: 0 auto;
-            margin-top: 10%;
-
-            width: 90%;
-            aspect-ratio: 1 / 1;
-            background-size: contain;
-            background-position: center;
-
-            div {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-image: linear-gradient(180deg, rgba(95, 186, 249, 0.3) 0%, rgba(95, 186, 249, 0) 50%, rgba(95, 186, 249, 0.3) 100%);
-                background-size: 100% 200%;
-                border: 2px solid #275F67;
-                animation: screenCase 2s linear infinite alternate-reverse;
-
-                @keyframes screenCase {
-                    from {
-                        background-position: top;
-                    }
-                    to {
-                        background-position: bottom;
-                    }
-                }
-            }
-
-            img {
-                position: absolute;
-                width: 24px;
-                height: 24px;
-                z-index: 2;
-                filter: drop-shadow(0px 0px 10px #62afd8);
-                &:first-child {
-                    top: -3px;
-                    left: -3px;
-                    transform: scale(-1);
-                }
-                &:last-child {
-                    bottom: -6px;
-                    right: -6px;
-                }
-            }
-        }
-        &-list {
-            margin-top: 10%;
-
-            &__item {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-
-                h6:first-child {
-                    font-weight: normal;
-                }
-                h6:last-child {
-                    text-align: right;
-                    white-space: nowrap;
-                    width: 70%;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                }
-            }
+        align-items: center;
+        justify-content: space-between;
+        animation: scaleOut 0.3s ease 1;
+        @keyframes scaleOut {
+          from {
+            transform: scale(0);
+          }
         }
 
-        &-cost {
-            margin-top: auto;
-            display: flex;
-            align-items: baseline;
-            justify-content: center;
-
-            h5 {
-                margin-left: 5px;
-            }
+        &:first-child {
+          margin-top: 0;
         }
 
-        app-button {
-            margin-top: 15px;
+        h6:first-child {
+          font-weight: normal;
         }
+        h6:last-child {
+          text-align: right;
+          white-space: nowrap;
+          width: 70%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
     }
+
+    &-cost {
+      margin-top: auto;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+
+      h5 {
+        margin-left: 5px;
+      }
+    }
+
+    app-button {
+      margin-top: auto;
+    }
+  }
 }

@@ -1,91 +1,91 @@
 import { Component, ElementRef, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'text',
+  selector: 'glitch',
   templateUrl: './text.component.html',
   styleUrls: ['./text.component.scss'],
 })
 export class TextComponent implements OnInit {
-  @Input()
-  textInit = '';
-
   @Input()
   delay = 0;
 
   @Input()
   loop: string = '';
 
-  text = '';
-  textCollection: string[] = [];
-  speed = 50;
-  count = 0;
-  incrInterval: any = null;
-  randInterval: any = null;
-
   constructor(private el: ElementRef) {}
 
-  ngOnInit(): void {
-    this.text = this.textInit;
+  ngAfterViewInit() {
+    const $el = this.el.nativeElement.children[0]
+    const textInit = $el.textContent
+    let text = textInit;
+    const textCollection: string[] = [];
+    const speed = 50;
+    let count = 0;
+    let incrInterval: any = null;
+    let randInterval: any = null;
+    const loop =  this.loop;
+    
 
-    this.pushCurrentTextCharacters();
+    // Push current text characters
+    for (let i = 0; i < text.length; i++) {
+      const currentChar = text.slice(i, i + 1);
+      textCollection.push(currentChar);
+    }
 
     setTimeout(() => {
-      this.incrInterval = setInterval(() => this.characterIncr(), this.speed);
-      this.randInterval = setInterval(() => this.setRandomText(), 50);
+      incrInterval = setInterval(characterIncr, speed);
+      randInterval = setInterval(setRandomText, 50);
     }, this.delay);
-  }
 
-  pushCurrentTextCharacters() {
-    for (let i = 0; i < this.text.length; i++) {
-      const currentChar = this.text.slice(i, i + 1);
-      this.textCollection.push(currentChar);
-    }
-  }
-
-  characterIncr() {
-    if (this.count == this.textCollection.length) {
-      clearInterval(this.incrInterval);
-      clearInterval(this.randInterval);
-
-      this.count = 0
-
-      if (this.loop)
-      setTimeout(() => {
-        this.incrInterval = setInterval(() => this.characterIncr(), this.speed);
-        this.randInterval = setInterval(() => this.setRandomText(), 50);
-      }, (1000 + Math.round(Math.random() * 5000)));
-
-      return;
+    function setRandomText() {
+      $el.textContent = getRandomText();
     }
 
-    this.count++;
-  }
-
-  getRandomText() {
-    let result = '';
-
-    if (this.count == 0) {
-      for (let i = 0; i < this.textCollection.length; i++) {
-        let randomCharacter = getRandomChar();
-
-        result += randomCharacter;
+    function characterIncr() {
+      if (count == textCollection.length) {
+        clearInterval(incrInterval);
+        clearInterval(randInterval);
+  
+        count = 0
+  
+        if (loop)
+        setTimeout(() => {
+          incrInterval = setInterval(characterIncr, speed);
+          randInterval = setInterval(setRandomText, 50);
+        }, (1000 + Math.round(Math.random() * 5000)));
+  
+        return;
       }
-    } else {
-      result = this.textInit.slice(0, this.count);
-
-      for (let i = 0; i < this.textCollection.length - this.count; i++) {
-        const randomCharacter = getRandomChar();
-
-        result += randomCharacter;
-      }
+  
+      count++;
     }
 
-    return result;
+
+    function getRandomText() {
+      let result = '';
+  
+      if (count == 0) {
+        for (let i = 0; i < textCollection.length; i++) {
+          let randomCharacter = getRandomChar();
+  
+          result += randomCharacter;
+        }
+      } else {
+        result = textInit.slice(0, count);
+  
+        for (let i = 0; i < textCollection.length - count; i++) {
+          const randomCharacter = getRandomChar();
+  
+          result += randomCharacter;
+        }
+      }
+  
+      return result;
+    }
   }
 
-  setRandomText() {
-    this.text = this.getRandomText();
-  }
+  ngOnInit(): void {}
+  
 }
 
 const getRandomChar = () =>

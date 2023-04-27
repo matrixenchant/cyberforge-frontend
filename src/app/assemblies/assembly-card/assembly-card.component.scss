@@ -1,0 +1,109 @@
+.assembly-card {
+  position: relative;
+  width: fit-content;
+
+  &-body {
+    pointer-events: none;
+    user-select: none;
+  }
+
+  &-title {
+    position: absolute;
+    top: 15%;
+    left: 10%;
+    right: 15%;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &-info {
+    position: absolute;
+    left: 10%;
+    right: 15%;
+    bottom: 20%;
+    display: flex;
+    align-items: stretch;
+
+    &-wrap {
+      width: 100%;
+      margin-left: 5%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+  }
+
+  &-case {
+    width: 100%;
+    max-width: 150px;
+  }
+
+  &-power {
+    width: 100%;
+  }
+  &-cost {
+    color: white;
+  }
+  &-components {
+    display: flex;
+    column-gap: 10px;
+
+    & ::ng-deep app-card {
+      position: relative;
+
+      .card {
+        width: 50px;
+        height: 60px;
+        &_rotate {
+          transform-origin: top;
+          transform: scale(0.15) translate(-240%, 0%);
+          transition: 0.5s ease;
+        }
+      }
+
+      &:hover {
+        z-index: 5;
+        .card_rotate {
+          transform: scale(0.8) translate(-240%, 0%);
+        }
+      }
+    }
+  }
+
+  &-likes {
+    position: absolute;
+    right: 7%;
+    bottom: 10%;
+    display: flex;
+    align-items: flex-end;
+    user-select: none;
+
+    span {
+      font-weight: bold;
+      color: white;
+      margin-right: 8px;
+      text-align: right;
+    }
+
+    svg {
+      cursor: pointer;
+      filter: drop-shadow(0px 0px 15px #44a3d8);
+      path {
+        transition: 0.5s ease;
+      }
+
+      &:active {
+        transform: scale(0.95);
+      }
+
+      &.active {
+        path {
+          fill: white;
+        }
+      }
+    }
+  }
+}

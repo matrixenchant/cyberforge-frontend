@@ -1,9 +1,9 @@
 <div
-  [className]="'card ' + 'card-' + index"
-  (mousedown)="startDrag($event)"
-  (mouseup)="stopDrag($event)"
-  (mouseenter)="onMouseEnter($event)"
-  (mouseleave)="onMouseLeave($event)"
+  [className]="'card ' + 'card-' + index + ' ' + deckClass"
+  (mousedown)="deckClass ? startDrag($event) : null"
+  (mouseup)="deckClass ? stopDrag($event) : null"
+  (mouseenter)="deckClass ? onMouseEnter($event) : null"
+  (mouseleave)="deckClass ? onMouseLeave($event) : null"
 >
   <div class="card_rotate">
     <div class="card-inner main-back" aTilt [tiltSettings]="tiltSettings">
@@ -12,10 +12,18 @@
         src="../../../assets/card-decor.svg"
         alt=""
       />
-      <h6 class="card-inner-label"><text loop="random" [textInit]="card.label"></text></h6>
-      <img [src]="card.hero" alt="" class="card-inner-hero" />
+      <h6 class="card-inner-label"><glitch loop="random">{{card?.label}}</glitch></h6>
+      <img [src]="card?.hero" alt="" class="card-inner-hero" />
       <div class="card-inner-price text-light">1024$</div>
-      <div class="card-inner-power"></div>
+      <div class="card-inner-power">
+        <app-progress-power [value]="card?.power || 0"></app-progress-power>
+      </div>
+      <div class="card-inner-spec">
+        <div *ngFor="let spec of card?.spec" class="card-inner-spec__item">
+          <h6>{{spec.label}}</h6>
+          <h6>{{spec.value}}</h6>
+        </div>
+      </div>
       <div class="card-outer">
         <svg
           width="372"
