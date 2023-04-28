@@ -56,8 +56,6 @@ export class MatrixTransitionComponent implements OnInit {
         pixel.update();
         pixel.draw();
       }
-
-      console.log('fwefwe');
     }
     ticker.add(updateTicker);
     setTimeout(() => {

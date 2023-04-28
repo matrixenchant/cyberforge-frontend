@@ -1,23 +1,23 @@
 <div class="assembly-card">
     <img class="assembly-card-body" src="../../../assets/assembly-card.svg" alt="">
     <div class="assembly-card-title">
-        <span>Сборка <b>{{assembly.user.login}}</b></span>
+        <span>Сборка <b>{{assembly.author_name}}</b></span>
         <span>-</span>
         <span><b>"{{assembly.name}}"</b></span>
     </div>
     <div class="assembly-card-info">
         <div class="assembly-card-case">
-            <app-case-img [url]="assembly.case.url"></app-case-img>
+            <app-case-img [url]="this.assembly.housing?.image"></app-case-img>
         </div>
         <div class="assembly-card-info-wrap">
             <div class="assembly-card-power">
-                <app-progress-power [value]="assembly.power"></app-progress-power>
+                <app-progress-power [value]="getRating()"></app-progress-power>
             </div>
             <div class="assembly-card-components">
                 <app-card *ngFor="let comp of getComponents()" [card]="comp"></app-card>
             </div>
             <div class="assembly-card-cost">
-                <h5>{{assembly.cost}}$</h5>
+                <h5>{{getCost()}}$</h5>
             </div>
         </div>
     </div>

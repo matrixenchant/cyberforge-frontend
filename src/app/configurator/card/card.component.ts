@@ -11,10 +11,11 @@ export class CardComponent implements OnInit {
   @Input()
   card: PCComponent | null = {
     id: 0,
-    label: 'Карта',
-    hero: '../../assets/hero.png',
+    name: 'Карта',
+    image: '../../assets/hero.png',
     type: 'cpu',
-    power: 0,
+    cost: 0,
+    rating: 0,
     spec: []
   };
 

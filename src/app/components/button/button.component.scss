@@ -57,4 +57,11 @@
     }
     background-color: rgba(white, 0.2);
   }
+
+  &--text {
+    background-color: rgba(white, 0.0);
+    .button-corner {
+      display: none;
+    }
+  }
 }

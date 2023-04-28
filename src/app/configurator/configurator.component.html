@@ -5,7 +5,7 @@
     <div class="configurator-spec main-back main-stroke">
       <app-filter *ngIf="activeType !== null" [fields]="filterFields" (onSearch)="onSearch($event)"></app-filter>
 
-      <div [ngClass]="{'configurator-spec__item--active': activeType == item.type}" class="configurator-spec__item secondary-back" *ngFor="let item of types" (click)="changeType(item.type)">
+      <div [ngClass]="{'configurator-spec__item--active': activeType == item.type}" class="configurator-spec__item secondary-back" *ngFor="let item of getRenderTypes()" (click)="changeType(item.type)">
         <div class="configurator-spec__item-label"><h5>{{item.label}}</h5></div>
         <div class="configurator-spec__item-preview">
           <svg *ngIf="item.component == null" width="46" height="41" viewBox="0 0 46 41" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -30,17 +30,21 @@
           </div>
         </div>
       </div>
-      <app-case-img url="../../assets/case.png"></app-case-img>
+      <div class="configurator-main-housing" (click)="changeType('housing')" [ngClass]="{'configurator-main-housing--null': getHousing().component == null}">
+        <h5>Выберите корпус</h5>
+        <app-card *ngIf="getHousing().component" [card]="getHousing().component"></app-card>
+        <app-case-img [url]="getHousing().component?.image"></app-case-img>
+      </div>
       <div class="configurator-main-list">
         <div *ngFor="let comp of getChoicesComponents()" class="configurator-main-list__item">
           <h6>{{getTypeLabel(comp.type)}}</h6>
-          <h6>{{comp.label}}</h6>
+          <h6>{{comp.name}}</h6>
         </div>
       </div>
 
-      <div *ngIf="getAvgCost()" class="configurator-main-cost text-light">
-        <h6>Средняя цена</h6>
-        <h5>{{getAvgCost()}}$</h5>
+      <div class="configurator-main-cost text-light">
+        <h6>Общая цена</h6>
+        <h5>{{getCost()}}$</h5>
       </div>
       <app-button (onClick)="saveAssembly()"><glitch>создать</glitch></app-button>
     </div>

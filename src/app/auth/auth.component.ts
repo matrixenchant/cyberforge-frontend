@@ -12,7 +12,7 @@ export class AuthComponent implements OnInit {
   password: string = '';
   repeatPassword: string = '';
 
-  constructor(private auth: AuthService) { }
+  constructor(public auth: AuthService) { }
 
   ngOnInit(): void {
   }

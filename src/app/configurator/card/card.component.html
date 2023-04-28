@@ -12,11 +12,11 @@
         src="../../../assets/card-decor.svg"
         alt=""
       />
-      <h6 class="card-inner-label"><glitch loop="random">{{card?.label}}</glitch></h6>
-      <img [src]="card?.hero" alt="" class="card-inner-hero" />
-      <div class="card-inner-price text-light">1024$</div>
+      <h6 class="card-inner-label"><glitch loop="random">{{card?.name}}</glitch></h6>
+      <img [src]="card?.image" alt="" class="card-inner-hero" />
+      <div class="card-inner-price text-light">{{card?.cost}}$</div>
       <div class="card-inner-power">
-        <app-progress-power [value]="card?.power || 0"></app-progress-power>
+        <app-progress-power [value]="card?.rating || 0"></app-progress-power>
       </div>
       <div class="card-inner-spec">
         <div *ngFor="let spec of card?.spec" class="card-inner-spec__item">

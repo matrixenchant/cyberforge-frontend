@@ -1,0 +1,42 @@
+.user-widget {
+  position: absolute;
+  right: 5%;
+  top: 30px;
+  z-index: 5;
+
+  &-profile {
+    position: relative;
+    padding: 16px 32px;
+    padding-right: 80px;
+    border-radius: 20px 100px 100px 20px;
+    background-color: rgba($color: white, $alpha: 0.1);
+    cursor: pointer;
+    transition: 0.5s ease;
+
+    &:hover, &.active {
+      background-color: rgba($color: white, $alpha: 0.2);
+    }
+
+    img {
+      position: absolute;
+      right: -20px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+  &-popup {
+    position: absolute;
+    top: calc(100% + 20px);
+    width: 90%;
+    padding: 10px;
+
+    animation: showPopup 0.5s ease;
+    @keyframes showPopup {
+        from {
+            opacity: 0;
+            transform: translateY(-10%);
+        }
+    }
+  }
+}

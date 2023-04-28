@@ -1,5 +1,7 @@
 <div class="logo"><img src="../assets/logo.svg" alt="CyberForge"></div>
 
+<app-user-widget></app-user-widget>
+
 <div class="notification-wrapper">
     <app-notification *ngFor="let item of notification.notifications" [message]="item.message" [id]="item.id"></app-notification>
 </div>

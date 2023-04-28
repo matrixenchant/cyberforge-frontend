@@ -1,4 +1,4 @@
-<button (click)="onClick.emit()" class="button">
+<button (click)="onClick.emit()" class="button" [ngClass]="{'button--text': type === 'text'}">
     <div class="button-corner">
         <div class="button-corner-inner"></div>
     </div>

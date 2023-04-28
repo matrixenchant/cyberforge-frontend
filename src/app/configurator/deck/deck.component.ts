@@ -58,11 +58,6 @@ export class DeckComponent implements OnInit, OnChanges {
   changeDeck(newDeck: any) {
     console.log('change deck', newDeck);
 
-    this.deckMid =
-    Math.round(this.deck.length / 2) -
-    1 +
-    (this.deck.length % 2 == 0 ? 0.5 : 0);
-
     gsap.to('.card--deck', {
       duration: 0.4,
       y: window.innerHeight * 1.2,
@@ -90,7 +85,7 @@ export class DeckComponent implements OnInit, OnChanges {
       if (index !== null && index !== i) return;
 
       const isEven = this.deck.length % 2 == 0;
-      const midI = this.deckMid;
+      const midI = Math.round(this.deck.length / 2) - 1 + (isEven ? 0.5 : 0);
 
       let coords = {
         x: centerX,

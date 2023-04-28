@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { NotificationService } from '../services/notification.service';
 import { DeckComponent } from './deck/deck.component';
+import { __components } from 'src/mockup';
 
 @Component({
   selector: 'app-configurator',
@@ -14,18 +15,18 @@ export class ConfiguratorComponent implements OnInit {
   showFilter: boolean = false;
   filterFields: FilterField[] = [
     {
-      name: 'Название',
+      label: 'Название',
       value: 'name',
       size: '1fr'
     },
     {
-      name: 'Цена от',
+      label: 'Цена от',
       value: 'costMin',
       size: '0.5fr',
       type: 'number'
     },
     {
-      name: 'Цена до',
+      label: 'Цена до',
       value: 'costMax',
       size: '0.5fr'
     },
@@ -39,112 +40,17 @@ export class ConfiguratorComponent implements OnInit {
   };
 
   types: PCTypes[] = [
+    { type: 'housing', label: 'Корпус', component: null },
     { type: 'cpu', label: 'CPU', component: null },
     { type: 'gpu', label: 'Видеокарта', component: null },
-    { type: 'motherboard', label: 'Мат. плата', component: null },
+    { type: 'mboard', label: 'Мат. плата', component: null },
     { type: 'ram', label: 'ОЗУ', component: null },
     { type: 'memory', label: 'Память', component: null },
     { type: 'power', label: 'Блок питания', component: null },
   ];
   activeType: string | null = null;
 
-  components: PCComponent[] = [
-    {
-      id: 1,
-      name: 'AMD Epyc 7262 N',
-      image: '../../../assets/hero.png',
-      type: 'cpu',
-      rating: 0,
-      cost: 0,
-      spec: [
-        {
-          name: 'Техпроцесс',
-          value: '5 нм',
-        },
-        {
-          name: 'Макс. тактовая частота',
-          value: '4.5 ГГц',
-        },
-        {
-          name: 'Ядер/потоков',
-          value: '16/32',
-        },
-      ],
-    },
-    {
-      id: 2,
-      name: 'CPU 2',
-      image: '../../../assets/hero.png',
-      type: 'cpu',
-    },
-    {
-      id: 3,
-      name: 'CPU 3',
-      image: '../../../assets/hero.png',
-      type: 'cpu',
-    },
-    {
-      id: 4,
-      name: 'CPU 4',
-      image: '../../../assets/hero.png',
-      type: 'cpu',
-    },
-    {
-      id: 5,
-      name: 'CPU 5',
-      image: '../../../assets/hero.png',
-      type: 'cpu',
-    },
-
-    {
-      id: 6,
-      name: 'AMD Epyc 7262 N',
-      image: '../../../assets/hero.png',
-      type: 'ram',
-    },
-    {
-      id: 7,
-      name: 'ram 2',
-      image: '../../../assets/hero.png',
-      type: 'ram',
-    },
-    {
-      id: 8,
-      name: 'ram 3',
-      image: '../../../assets/hero.png',
-      type: 'ram',
-    },
-    {
-      id: 9,
-      name: 'ram 4',
-      image: '../../../assets/hero.png',
-      type: 'ram',
-    },
-    {
-      id: 10,
-      name: 'ram 5',
-      image: '../../../assets/hero.png',
-      type: 'ram',
-    },
-    {
-      id: 11,
-      name: 'ram 5',
-      image: '../../../assets/hero.png',
-      type: 'ram',
-    },
-    {
-      id: 12,
-      name: 'ram 5',
-      image: '../../../assets/hero.png',
-      type: 'cpu',
-    },
-    {
-      id: 13,
-      name: 'ram 5',
-      image: '../../../assets/hero.png',
-      type: 'cpu',
-    },
-  ];
+  components: PCComponent[] = __components;
 
   deck = [] as any;
 
@@ -156,23 +62,40 @@ export class ConfiguratorComponent implements OnInit {
     this.notification.notify('Сборка сохранена');
   }
 
+  getHousing() {
+    return this.types[0]
+  }
+  getRenderTypes() {
+    return this.types.filter(x => x.type !== 'housing')
+  }
+
   onSearch(data: any) {
     console.log('filter', data);
     const type = this.types.filter((x) => x.type === this.activeType)[0];
   
+    const byName = (name: string) => data.name ? name.toLowerCase().includes(data.name.toLowerCase()) : true
+    const byCostMin = (cost: number) => data.costMin ? cost >= data.costMin : true
+    const byCostMax = (cost: number) => data.costMax ? cost <= data.costMax  : true
     
     this.deckComponent?.changeDeck(
       this.components.filter(
-        (x: any) => x.type === type.type && x.id !== type?.component?.id && x.name == data.name
+        (x: any) => x.type === type.type &&
+        x.id !== type?.component?.id &&
+        byName(x.name) &&
+        byCostMin(x.cost) &&
+        byCostMax(x.cost)
       )
     );
   }
 
-  getAvgCost() {
-    if (!this.components.length) return null;
+  getCost() {
     let cost = 0;
-    this.components.forEach((x: any) => (cost += x.cost));
-    return Math.round(cost / this.components.length);
+
+    this.types.forEach((x: PCTypes) => {
+      if (!x.component?.cost) return
+      cost += x.component.cost
+    });
+    return cost || '--';
   }
 
   getChoicesComponents() {
@@ -196,6 +119,8 @@ export class ConfiguratorComponent implements OnInit {
   }
 
   changeType(type: string) {
+    console.log(type);
+    
     if (type === this.activeType) return;
     this.activeType = type;
     const component = this.types.filter((x) => x.type === type)[0].component;

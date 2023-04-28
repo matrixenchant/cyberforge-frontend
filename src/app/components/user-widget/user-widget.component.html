@@ -1,0 +1,12 @@
+<div *ngIf="location.path() !== '/auth'" class="user-widget">
+    <app-button *ngIf="!auth.isAuth" (onClick)="transition.redirectTo(['/auth'])">Войти</app-button>
+    <div *ngIf="auth.isAuth" (click)="popupActive = !popupActive" class="user-widget-profile" [ngClass]="{'active': popupActive}">
+        <h6>{{auth.user.username}}</h6>
+        <img src="../../../assets/user.svg" [alt]="auth.user.username">
+    </div>
+    <div *ngIf="popupActive" class="user-widget-popup secondary-back">
+        <app-button>Мои сборки</app-button>
+        <hr>
+        <app-button type="text" (onClick)="logout()">Выход</app-button>
+    </div>
+</div>

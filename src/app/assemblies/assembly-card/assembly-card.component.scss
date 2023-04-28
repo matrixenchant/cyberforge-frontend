@@ -21,8 +21,9 @@
 
   &-info {
     position: absolute;
+
     left: 10%;
-    right: 15%;
+    right: 10%;
     bottom: 20%;
     display: flex;
     align-items: stretch;
@@ -42,7 +43,7 @@
   }
 
   &-power {
-    width: 100%;
+    width: 90%;
   }
   &-cost {
     color: white;

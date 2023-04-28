@@ -21,6 +21,7 @@ import { HomeNavComponent } from './home/home-nav/home-nav.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { NotificationComponent } from './components/notification/notification.component';
 import { FilterComponent } from './components/filter/filter.component';
+import { UserWidgetComponent } from './components/user-widget/user-widget.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { FilterComponent } from './components/filter/filter.component';
     BreadcrumbComponent,
     NotificationComponent,
     FilterComponent,
+    UserWidgetComponent,
   ],
   imports: [AngularTiltModule, BrowserModule, AppRoutingModule, FormsModule],
   providers: [],

@@ -11,6 +11,7 @@ const routes: Routes = [
   {path: 'assemblies', component: AssembliesComponent}, 
   {path: 'auth', component: AuthComponent},
   {path: 'home', component: HomeComponent},
+  {path: '**', redirectTo: '/home'},
 ];
 
 @NgModule({

@@ -7,6 +7,9 @@ import { Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@an
 })
 export class ButtonComponent implements OnInit {
 
+  @Input()
+  type: string = '';
+
   constructor() { }
 
   ngOnInit(): void {
