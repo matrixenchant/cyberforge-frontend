@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-auth',
@@ -8,22 +9,43 @@ import { AuthService } from '../services/auth.service';
 })
 export class AuthComponent implements OnInit {
 
-  login: string = ''; 
-  password: string = '';
-  repeatPassword: string = '';
+  isLogin = true;
 
-  constructor(public auth: AuthService) { }
+  login = {
+    username: '',
+    password: ''
+  }
+
+  register = {
+    username: '',
+    password: '',
+    repeatPassword: '',
+  }
+
+  constructor(public auth: AuthService, public notification: NotificationService) { }
 
   ngOnInit(): void {
   }
 
   loginHandler() {
-    console.log(this.login, this.password);
-    this.auth.login(this.login, this.password)
+    if (!this.login.username || !this.login.password) {
+      return this.notification.notify('Заполните все поля')
+    }
+    if (this.login.password.length < 6) {
+      return this.notification.notify('Пароль должен быть длиннее 6 символов')
+    }
+
+    this.auth.login(this.login.username, this.login.password)
   }
 
   registerHandler() {
-    console.log(this.login, this.password);
+    if (!this.register.username || !this.register.password || !this.register.password) {
+      return this.notification.notify('Заполните все поля')
+    }
+    if (this.register.password !== this.register.repeatPassword) {
+      return this.notification.notify('Пароли не совпадают')
+    }
+
   }
 
 }

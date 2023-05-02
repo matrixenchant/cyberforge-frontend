@@ -34,11 +34,6 @@ export class ConfiguratorComponent implements OnInit {
 
   name: string = '';
 
-  assembly = {
-    case: {},
-    name: '',
-  };
-
   types: PCTypes[] = [
     { type: 'housing', label: 'Корпус', component: null },
     { type: 'cpu', label: 'CPU', component: null },

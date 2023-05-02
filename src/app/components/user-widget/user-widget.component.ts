@@ -20,7 +20,7 @@ export class UserWidgetComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.router.events.subscribe((val) => console.log(this.auth.isAuth))
+    this.router.events.subscribe((val) => this.popupActive = false)
   }
 
   logout() {

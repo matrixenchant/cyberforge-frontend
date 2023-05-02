@@ -2,6 +2,6 @@
     <app-breadcrumb>Сборки</app-breadcrumb>
     <app-filter [fields]="filterFields"></app-filter>
     <div class="assemblies-grid">
-        <app-assembly-card *ngFor="let mod of modifications" [canLiked]="true" [assembly]="mod"></app-assembly-card>
+        <app-assembly-card *ngFor="let mod of getModifications()" [canLiked]="true" [assembly]="mod"></app-assembly-card>
     </div>
 </section>

@@ -9,6 +9,7 @@ import { HomeComponent } from './home/home.component';
 const routes: Routes = [
   {path: 'configurator', component: ConfiguratorComponent, canActivate: [AuthGuard] },
   {path: 'assemblies', component: AssembliesComponent}, 
+  {path: 'my-assemblies', component: AssembliesComponent}, 
   {path: 'auth', component: AuthComponent},
   {path: 'home', component: HomeComponent},
   {path: '**', redirectTo: '/home'},

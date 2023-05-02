@@ -1,17 +1,17 @@
 <section class="auth">
-  <div class="auth-wrap main-back main-stroke">
+  <div *ngIf="isLogin" class="auth-wrap main-back main-stroke">
     <h3><glitch>Идентификация</glitch></h3>
     <div class="auth-form">
       <div class="input">
         <input
-          id="auth-login"
+          id="auth-username"
           required
           type="text"
-          [(ngModel)]="login"
-          name="login"
+          [(ngModel)]="login.username"
+          name="username"
         />
         <div class="input-active">
-          <label for="auth-login">Логин</label> <span></span>
+          <label for="auth-username">Логин</label> <span></span>
         </div>
       </div>
 
@@ -20,7 +20,7 @@
           id="auth-password"
           required
           type="password"
-          [(ngModel)]="password"
+          [(ngModel)]="login.password"
           name="password"
         />
         <div class="input-active">
@@ -29,12 +29,63 @@
       </div>
 
     </div>
-    <div class="auth-additional">
+    <div class="auth-additional" (click)="isLogin = false">
         <h6>Создать новый профиль</h6>
     </div>
     <div class="auth-btns">
         <app-button (onClick)="loginHandler()">Получить доступ</app-button>
-        <app-button (onClick)="loginHandler()">Войти как гость</app-button>
+        <app-button (onClick)="auth.loginAsGuest()">Войти как гость</app-button>
+    </div>
+  </div>
+
+  <div *ngIf="!isLogin" class="auth-wrap main-back main-stroke">
+    <h3><glitch>Новый пользователь</glitch></h3>
+    <div class="auth-form">
+      <div class="input">
+        <input
+          id="auth-username"
+          required
+          type="text"
+          [(ngModel)]="register.username"
+          name="username"
+        />
+        <div class="input-active">
+          <label for="auth-username">Логин</label> <span></span>
+        </div>
+      </div>
+
+      <div class="input">
+        <input
+          id="auth-password"
+          required
+          type="password"
+          [(ngModel)]="register.password"
+          name="password"
+        />
+        <div class="input-active">
+          <label for="auth-password">Пароль</label> <span></span>
+        </div>
+      </div>
+
+      <div class="input">
+        <input
+          id="auth-rpassword"
+          required
+          type="password"
+          [(ngModel)]="register.repeatPassword"
+          name="rpassword"
+        />
+        <div class="input-active">
+          <label for="auth-password">Подтвердите</label> <span></span>
+        </div>
+      </div>
+
+    </div>
+    <div class="auth-additional" (click)="isLogin = true">
+        <h6>Войти в существующий аккаунт</h6>
+    </div>
+    <div class="auth-btns">
+        <app-button (onClick)="loginHandler()">Создать аккаунт</app-button>
     </div>
   </div>
 </section>
