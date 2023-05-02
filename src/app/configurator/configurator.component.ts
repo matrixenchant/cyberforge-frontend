@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { snakeCase } from 'src/utils';
+import { ApiService } from '../services/api.service';
 import { NotificationService } from '../services/notification.service';
 import { DeckComponent } from './deck/deck.component';
-import { __components } from 'src/mockup';
-import { ApiService } from '../services/api.service';
-import { snakeCase } from 'src/utils';
+import { AuthService } from '../services/auth.service';
+import { catchError, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-configurator',
@@ -19,18 +20,18 @@ export class ConfiguratorComponent implements OnInit {
     {
       label: 'Название',
       value: 'name',
-      size: '1fr'
+      size: '1fr',
     },
     {
       label: 'Цена от',
       value: 'costMin',
       size: '0.5fr',
-      type: 'number'
+      type: 'number',
     },
     {
       label: 'Цена до',
       value: 'costMax',
-      size: '0.5fr'
+      size: '0.5fr',
     },
   ];
 
@@ -42,7 +43,7 @@ export class ConfiguratorComponent implements OnInit {
     description: '',
     author_name: '',
     likes: 0,
-    components: __components
+    components: [],
   };
 
   types: PCTypes[] = [
@@ -60,50 +61,91 @@ export class ConfiguratorComponent implements OnInit {
 
   deck = [] as any;
 
-  constructor(public notification: NotificationService, public api: ApiService) {}
+  loading: boolean = false;
 
-  ngOnInit(): void {
-    
-  }
+  constructor(
+    public notification: NotificationService,
+    public api: ApiService,
+    public auth: AuthService,
+  ) {}
+
+  ngOnInit(): void {}
 
   saveAssembly() {
-    this.notification.notify('Сборка сохранена');
+    if (this.types.some(x => x.component === null)) {
+      return this.notification.notify('Выберите все компоненты');
+    }
+    if (!this.name) {
+      return this.notification.notify('Заполните название сборки');
+    }
+
+    const modification: PCModification = {
+      name: this.name,
+      description: `Description for ${this.name}`,
+      likes: 0,
+      author_name: this.auth.user.username,
+      components: this.types.map(x => x.component) as PCComponent[]
+    }
+    
+    this.loading = true;
+    this.api.addModification(modification)
+    .pipe(
+      catchError((err) => {
+        console.log(err);
+        
+        for (let e in err?.error) {
+          this.notification.notify(err.error[e]);
+        }
+
+        this.loading = false;
+        return throwError(() => err);
+      })
+    )
+    .subscribe(x => {
+      console.log(x);
+      this.notification.notify('Сборка сохранена');
+      this.loading = false;
+    })
   }
 
   getHousing() {
-    return this.types[0]
+    return this.types[0];
   }
   getRenderTypes() {
-    return this.types.filter(x => x.type !== 'Housing')
+    return this.types.filter((x) => x.type !== 'Housing');
   }
 
   onSearch(data: any) {
     console.log('filter', data);
     const type = this.types.filter((x) => x.type === this.activeType)[0];
-  
-    const byName = (name: string) => data.name ? name.toLowerCase().includes(data.name.toLowerCase()) : true
-    const byCostMin = (cost: number) => data.costMin ? cost >= data.costMin : true
-    const byCostMax = (cost: number) => data.costMax ? cost <= data.costMax  : true
-    
+
+    const byName = (name: string) =>
+      data.name ? name.toLowerCase().includes(data.name.toLowerCase()) : true;
+    const byCostMin = (cost: number) =>
+      data.costMin ? cost >= data.costMin : true;
+    const byCostMax = (cost: number) =>
+      data.costMax ? cost <= data.costMax : true;
+
     this.deckComponent?.changeDeck(
       this.assembly.components.filter(
-        (x: any) => x.type === type.type &&
-        x.id !== type?.component?.id &&
-        byName(x.name) &&
-        byCostMin(x.cost) &&
-        byCostMax(x.cost)
+        (x: any) =>
+          x.type === type.type &&
+          x.id !== type?.component?.id &&
+          byName(x.name) &&
+          byCostMin(x.cost) &&
+          byCostMax(x.cost)
       )
     );
   }
 
   getCost() {
-    let cost = 0;
+    let price = 0;
 
     this.types.forEach((x: PCTypes) => {
-      if (!x.component?.cost) return
-      cost += x.component.cost
+      if (!x.component?.price) return;
+      price += +x.component.price;
     });
-    return cost || '--';
+    return price || '--';
   }
 
   getChoicesComponents() {
@@ -131,15 +173,9 @@ export class ConfiguratorComponent implements OnInit {
     this.activeType = type;
     const component = this.types.filter((x) => x.type === type)[0].component;
 
-    this.api.getListPCComponent(snakeCase(type)).subscribe(x => {
-      console.log('api', x);
-    })
+    this.api.getListPCComponent(snakeCase(type)).subscribe((x) => {
+      this.deckComponent?.changeDeck(x.results as PCComponent[]);
+    });
 
-    this.deckComponent?.changeDeck(
-      this.assembly.components.filter(
-        (x: any) => x.type === type && x.id !== component?.id
-      )
-    );
   }
 }
-

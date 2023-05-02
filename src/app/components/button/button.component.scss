@@ -76,6 +76,8 @@
     }
   }
   &--loading {
+    pointer-events: none;
+
     .button-label {
       animation: hideLabel 0.4s ease forwards;
       @keyframes hideLabel {

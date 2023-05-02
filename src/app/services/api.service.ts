@@ -46,10 +46,18 @@ export class ApiService {
     );
   }
   toTypesID(modification: PCModification) {
-    return modification.components.map(x => ({[snakeCase(x.type)]: x.id}))
+    return modification.components.reduce((x, val) => ({...x, [snakeCase(val.type)]: val.id}), {})
   }
   addModification(modification: PCModification): Observable<PCModification> {
     let typesID = this.toTypesID(modification);
+
+    console.log(      {
+      name: modification.name,
+      description: modification.description,
+      author_name: modification.author_name,
+      likes: modification.likes,
+      ...typesID
+    });
 
     return this.client.post<PCModification>(
       `${BASE_URL}/configurator/modifications/`,
@@ -58,12 +66,13 @@ export class ApiService {
         description: modification.description,
         author_name: modification.author_name,
         likes: modification.likes,
+        cooling: 1,
         ...typesID
       }
     );
   }
   updateModification(modification: PCModification): Observable<PCModification> {
-    let list = this.toTypesID(modification);
+    let typesID = this.toTypesID(modification);
     
     return this.client.put<PCModification>(
       `${BASE_URL}/configurator/modifications/${modification.id}/`,
@@ -72,14 +81,8 @@ export class ApiService {
         description: modification.description,
         author_name: modification.author_name,
         likes: modification.likes + 1,
-        housing: list[0],
-        motherboard: list[1],
-        power_supply: list[2],
-        cpu: list[3],
-        gpu: list[4],
-        ram: list[5],
-        memory: list[6],
-        cooling: list[7],
+        cooling: 1,
+        ...typesID
       }
     );
   }

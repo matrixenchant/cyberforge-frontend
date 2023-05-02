@@ -25,6 +25,7 @@ import { HomeComponent } from './home/home.component';
 import { MatrixTransitionComponent } from './matrix-transition/matrix-transition.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './services/AuthInterceptor';
+import { Price } from './pipes/price.pipe';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { AuthInterceptor } from './services/AuthInterceptor';
     FilterComponent,
     UserWidgetComponent,
     Error404Component,
+    Price
   ],
   imports: [AngularTiltModule, BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [

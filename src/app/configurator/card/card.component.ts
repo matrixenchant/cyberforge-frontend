@@ -14,7 +14,7 @@ export class CardComponent implements OnInit {
     name: 'Карта',
     images: '../../assets/hero.png',
     type: 'CPU',
-    cost: 0,
+    price: 0,
     rating: 0,
     spec: []
   };
@@ -60,6 +60,10 @@ export class CardComponent implements OnInit {
 
   ngOnInit(): void {
     this.$main = document.querySelector('.configurator-main');
+  }
+
+  getSpec() {
+    return this.card?.spec?.slice(0, 4) || []
   }
 
   dragging = (e: MouseEvent) => {

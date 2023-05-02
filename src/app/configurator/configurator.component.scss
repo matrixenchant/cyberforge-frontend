@@ -132,16 +132,17 @@
         height: 120px;
         z-index: 5;
         .card {
+          height: 100%;
           &_rotate {
             transform-origin: top left;
             transform: scale(0.25) translate(0%, 0%);
             transition: 0.5s ease;
           }
+        }
 
-          &:hover {
-            .card_rotate {
-              transform: scale(0.8) translate(-50%, -44%);
-            }
+        &:hover {
+          .card_rotate {
+            transform: scale(0.8) translate(-50%, -44%);
           }
         }
       }

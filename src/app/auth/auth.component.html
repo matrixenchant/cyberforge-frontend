@@ -33,8 +33,8 @@
         <h6>Создать новый профиль</h6>
     </div>
     <div class="auth-btns">
-        <app-button (onClick)="loginHandler()">Получить доступ</app-button>
-        <app-button (onClick)="auth.loginAsGuest()">Войти как гость</app-button>
+        <app-button [loading]="auth.loading" (onClick)="loginHandler()">Получить доступ</app-button>
+        <app-button [loading]="auth.loading" (onClick)="auth.loginAsGuest()">Войти как гость</app-button>
     </div>
   </div>
 
@@ -51,6 +51,19 @@
         />
         <div class="input-active">
           <label for="auth-username">Логин</label> <span></span>
+        </div>
+      </div>
+
+      <div class="input">
+        <input
+          id="auth-email"
+          required
+          type="email"
+          [(ngModel)]="register.email"
+          name="email"
+        />
+        <div class="input-active">
+          <label for="auth-email">Email</label> <span></span>
         </div>
       </div>
 
@@ -76,7 +89,7 @@
           name="rpassword"
         />
         <div class="input-active">
-          <label for="auth-password">Подтвердите</label> <span></span>
+          <label for="auth-rpassword">Подтвердите</label> <span></span>
         </div>
       </div>
 
@@ -85,7 +98,7 @@
         <h6>Войти в существующий аккаунт</h6>
     </div>
     <div class="auth-btns">
-        <app-button (onClick)="loginHandler()">Создать аккаунт</app-button>
+        <app-button [loading]="auth.loading" (onClick)="registerHandler()">Создать аккаунт</app-button>
     </div>
   </div>
 </section>

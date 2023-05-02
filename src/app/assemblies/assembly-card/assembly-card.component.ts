@@ -39,6 +39,9 @@ export class AssemblyCardComponent implements OnInit {
     return Math.round(sum / this.assembly.components.length)
   }
   getCost() {
-    return this.assembly.components.reduce((prev, val) => val.cost + prev, 0)
+    return this.assembly.components.reduce((prev, val) => +val.price + prev, 0)
+  }
+  getComponents() {
+    return this.assembly.components.slice(0, 4)
   }
 }

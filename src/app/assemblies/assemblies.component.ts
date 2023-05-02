@@ -1,8 +1,9 @@
 import { Location } from '@angular/common';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { Router } from '@angular/router';
-import { __modifications } from 'src/mockup';
+import { catchError, throwError } from 'rxjs';
+import { ApiService } from '../services/api.service';
 import { AuthService } from '../services/auth.service';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-assemblies',
@@ -15,35 +16,60 @@ export class AssembliesComponent implements OnInit {
     {
       label: 'Название',
       value: 'name',
-      size: '1fr'
+      size: '1fr',
     },
     {
       label: 'Цена от',
       value: 'costMin',
       size: '0.5fr',
-      type: 'number'
+      type: 'number',
     },
     {
       label: 'Цена до',
       value: 'costMax',
-      size: '0.5fr'
+      size: '0.5fr',
     },
   ];
 
   isMyAssemblies = false;
+  loading: boolean = false;
 
-  modifications: PCModification[] = __modifications;
+  modifications: PCModification[] = [];
 
-  constructor(public location: Location, public auth: AuthService) {
-    if (this.location.path() == '/my-assemblies') this.isMyAssemblies = true
+  constructor(
+    public location: Location,
+    public auth: AuthService,
+    public api: ApiService,
+    public notification: NotificationService
+  ) {
+    if (this.location.path() == '/my-assemblies') this.isMyAssemblies = true;
   }
 
   ngOnInit(): void {
+    if (!this.isMyAssemblies) {
+      this.loading = true;
+      this.api
+        .getListModification()
+        .pipe(
+          catchError((err) => {
+            console.log(err);
+
+            this.loading = false;
+            return throwError(() => err);
+          })
+        )
+        .subscribe((data) => {
+          this.modifications = data.results as PCModification[]
+          this.loading = false;
+        });
+    }
   }
 
   getModifications() {
-    if (this.isMyAssemblies) return this.modifications.filter(x => x.author_name == this.auth.user.username)
-    return this.modifications
-  }
+    if (this.isMyAssemblies) {
+      return this.auth.user.modifications;
+    }
 
+    return this.modifications;
+  }
 }

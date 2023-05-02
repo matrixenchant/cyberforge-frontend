@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 import { BASE_URL } from 'src/config';
 import { MatrixTransitionService } from './matrix.transition';
-import { Observable } from 'rxjs';
 import { NotificationService } from './notification.service';
 
 @Injectable({
@@ -12,10 +11,10 @@ import { NotificationService } from './notification.service';
 })
 export class AuthService implements OnInit {
   loading = false;
-  isAuth = false;
+  isAuth = !!localStorage.getItem('token');
   user: AppUser = {
-    id: 0,
-    username: 'matrixenchant',
+    username: '',
+    modifications: [],
   };
 
   constructor(
@@ -25,29 +24,51 @@ export class AuthService implements OnInit {
     private client: HttpClient
   ) {}
 
-  ngOnInit(): void {
-    if (localStorage.getItem('token')) {
-      this.isAuth = true;
-    } else this.isAuth = false;
+  ngOnInit(): void {}
 
-    console.log(this.isAuth);
-  }
-
-  register(username: string, password: string) {
+  getUser() {
     this.loading = true;
     this.client
-      .post<AuthToken>(`${BASE_URL}/users/register/`, { username, password, modifications: [] })
+      .get<AppUser>(`${BASE_URL}/users/user/`)
       .pipe(
         catchError((err) => {
-          this.n.notify(err.statusText);
+          this.n.notify('Нет доступа');
+
           this.loading = false;
-          return throwError(() => err)
+          return throwError(() => err);
         })
       )
-      .subscribe(({ token }) => {
-        localStorage.setItem('token', 'test-token');
-        this.transition.redirectTo(['/home']);
+      .subscribe((user) => {
+        this.user = user;
+        this.loading = false;
+      });
+  }
+
+  register(username: string, password: string, email: string) {
+    this.loading = true;
+    this.client
+      .post<AuthUser>(`${BASE_URL}/users/register/`, {
+        username,
+        password,
+        email,
+        phone: '71234567890',
+      })
+      .pipe(
+        catchError((err) => {
+          for (let e in err?.error) {
+            this.n.notify(err.error[e]);
+          }
+
+          this.loading = false;
+          return throwError(() => err);
+        })
+      )
+      .subscribe(({ token, user }) => {
+        this.user = user;
+        localStorage.setItem('token', token);
         this.isAuth = true;
+
+        this.transition.redirectTo(['/home']);
         this.loading = false;
       });
   }
@@ -55,15 +76,24 @@ export class AuthService implements OnInit {
   login(username: string, password: string) {
     this.loading = true;
     this.client
-      .post<AuthToken>(`${BASE_URL}/users/login/`, { username, password })
-      .subscribe((res) => {
-        console.log(res);
+      .post<AuthUser>(`${BASE_URL}/users/login/`, { username, password })
+      .pipe(
+        catchError((err) => {
+          for (let e in err?.error) {
+            this.n.notify(err.error[e]);
+          }
+          this.loading = false;
+          return throwError(() => err);
+        })
+      )
+      .subscribe(({ token, user }) => {
+        //this.user = user;
+        localStorage.setItem('token', token);
+        this.isAuth = true;
+        this.transition.redirectTo(['/home']);
 
         this.loading = false;
       });
-
-    //localStorage.setItem('token', 'test-token');
-    //this.transition.redirectTo(['/home'])
   }
 
   loginAsGuest() {

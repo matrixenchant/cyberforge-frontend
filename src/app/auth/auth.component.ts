@@ -18,10 +18,11 @@ export class AuthComponent implements OnInit {
 
   register = {
     username: '',
+    email: '',
     password: '',
     repeatPassword: '',
   }
-
+  
   constructor(public auth: AuthService, public notification: NotificationService) { }
 
   ngOnInit(): void {
@@ -39,13 +40,26 @@ export class AuthComponent implements OnInit {
   }
 
   registerHandler() {
-    if (!this.register.username || !this.register.password || !this.register.password) {
+    if (!this.register.username || !this.register.password || !this.register.password || !this.register.email) {
       return this.notification.notify('Заполните все поля')
+    }
+    if (this.register.password.length < 6) {
+      return this.notification.notify('Пароль должен быть длиннее 6 символов')
     }
     if (this.register.password !== this.register.repeatPassword) {
       return this.notification.notify('Пароли не совпадают')
     }
-
+    if (!validateEmail(this.register.email)) {
+      return this.notification.notify('Неверная почта')
+    }
+    
+    this.auth.register(this.register.username, this.register.password, this.register.email)
   }
 
 }
+
+const validateEmail = (email: string) => {
+  return email.match(
+    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  );
+};

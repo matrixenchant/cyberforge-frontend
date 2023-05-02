@@ -10,6 +10,9 @@ export class FilterComponent implements OnInit {
   @Input()
   fields: FilterField[] = [];
 
+  @Input()
+  loading: boolean = false;
+
   data: any = {};
 
   constructor() { }

@@ -13,13 +13,13 @@
         alt=""
       />
       <h6 class="card-inner-label"><glitch loop="random">{{card?.name}}</glitch></h6>
-      <img [src]="card?.images" alt="" class="card-inner-hero" />
-      <div class="card-inner-price text-light">{{card?.cost}}$</div>
+      <img *ngIf="card?.images" [src]="card?.images" alt="" class="card-inner-hero" />
+      <div class="card-inner-price text-light">{{card?.price | price}}$</div>
       <div class="card-inner-power">
         <app-progress-power [value]="card?.rating || 0"></app-progress-power>
       </div>
       <div class="card-inner-spec">
-        <div *ngFor="let spec of card?.spec" class="card-inner-spec__item">
+        <div *ngFor="let spec of getSpec()" class="card-inner-spec__item">
           <h6>{{spec.label}}</h6>
           <h6>{{spec.value}}</h6>
         </div>

@@ -1,5 +1,5 @@
 <button
-  (click)="onClick.emit()"
+  (click)="loading ? null : onClick.emit()"
   class="button"
   [ngClass]="{ 'button--text': type === 'text', 'button--loading': loading }"
 >

@@ -7,7 +7,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/cpu.png',
     type: 'CPU',
     rating: 10,
-    cost: 1274,
+    price: 1274,
     spec: [
       {
         label: 'Техпроцесс',
@@ -29,7 +29,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/cpu.png',
     type: 'CPU',
     rating: 15,
-    cost: 100,
+    price: 100,
   },
   {
     id: 3,
@@ -37,7 +37,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/cpu.png',
     type: 'CPU',
     rating: 20,
-    cost: 4528,
+    price: 4528,
   },
   {
     id: 4,
@@ -45,7 +45,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/cpu.png',
     type: 'CPU',
     rating: 30,
-    cost: 1337,
+    price: 1337,
   },
   {
     id: 5,
@@ -53,7 +53,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/cpu.png',
     type: 'CPU',
     rating: 75,
-    cost: 228,
+    price: 228,
   },
 
   // RAM
@@ -63,7 +63,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/ram.png',
     type: 'RAM',
     rating: 10,
-    cost: 145,
+    price: 145,
   },
   {
     id: 7,
@@ -71,7 +71,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/ram.png',
     type: 'RAM',
     rating: 10,
-    cost: 453,
+    price: 453,
   },
   {
     id: 8,
@@ -79,7 +79,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/ram.png',
     type: 'RAM',
     rating: 10,
-    cost: 178,
+    price: 178,
   },
   {
     id: 9,
@@ -87,7 +87,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/ram.png',
     type: 'RAM',
     rating: 10,
-    cost: 321,
+    price: 321,
   },
   {
     id: 10,
@@ -95,7 +95,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/ram.png',
     type: 'RAM',
     rating: 10,
-    cost: 122,
+    price: 122,
   },
 
   // GPU
@@ -105,7 +105,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/gpu.png',
     type: 'GPU',
     rating: 10,
-    cost: 7850,
+    price: 7850,
   },
   {
     id: 12,
@@ -113,7 +113,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/gpu.png',
     type: 'GPU',
     rating: 10,
-    cost: 1234,
+    price: 1234,
   },
   {
     id: 13,
@@ -121,7 +121,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/gpu.png',
     type: 'GPU',
     rating: 10,
-    cost: 4568,
+    price: 4568,
   },
   {
     id: 14,
@@ -129,7 +129,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/gpu.png',
     type: 'GPU',
     rating: 10,
-    cost: 1203,
+    price: 1203,
   },
   {
     id: 15,
@@ -137,7 +137,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/gpu.png',
     type: 'GPU',
     rating: 10,
-    cost: 1247,
+    price: 1247,
   },
 
 
@@ -148,7 +148,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/mboard.png',
     type: 'Motherboard',
     rating: 10,
-    cost: 0,
+    price: 0,
   },
   {
     id: 17,
@@ -156,7 +156,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/mboard.png',
     type: 'Motherboard',
     rating: 10,
-    cost: 0,
+    price: 0,
   },
   {
     id: 18,
@@ -164,7 +164,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/mboard.png',
     type: 'Motherboard',
     rating: 10,
-    cost: 0,
+    price: 0,
   },
   {
     id: 19,
@@ -172,7 +172,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/mboard.png',
     type: 'Motherboard',
     rating: 10,
-    cost: 0,
+    price: 0,
   },
   {
     id: 20,
@@ -180,7 +180,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/mboard.png',
     type: 'Motherboard',
     rating: 10,
-    cost: 0,
+    price: 0,
   },
 
 
@@ -191,7 +191,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/housing.png',
     type: 'Housing',
     rating: 10,
-    cost: 0,
+    price: 0,
   },
   {
     id: 22,
@@ -199,7 +199,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/housing.png',
     type: 'Housing',
     rating: 10,
-    cost: 0,
+    price: 0,
   },
   {
     id: 23,
@@ -207,7 +207,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/housing.png',
     type: 'Housing',
     rating: 10,
-    cost: 0,
+    price: 0,
   },
   {
     id: 24,
@@ -215,7 +215,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/housing.png',
     type: 'Housing',
     rating: 10,
-    cost: 0,
+    price: 0,
   },
   {
     id: 25,
@@ -223,7 +223,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/housing.png',
     type: 'Housing',
     rating: 10,
-    cost: 0,
+    price: 0,
   },
 
 
@@ -235,7 +235,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/memory.png',
     type: 'Memory',
     rating: 10,
-    cost: 0,
+    price: 0,
   },
   {
     id: 27,
@@ -243,7 +243,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/memory.png',
     type: 'Memory',
     rating: 10,
-    cost: 0,
+    price: 0,
   },
   {
     id: 28,
@@ -251,7 +251,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/memory.png',
     type: 'Memory',
     rating: 10,
-    cost: 0,
+    price: 0,
   },
   {
     id: 29,
@@ -259,7 +259,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/memory.png',
     type: 'Memory',
     rating: 10,
-    cost: 0,
+    price: 0,
   },
   {
     id: 30,
@@ -267,7 +267,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/memory.png',
     type: 'Memory',
     rating: 10,
-    cost: 0,
+    price: 0,
   },
 
    // Power
@@ -277,7 +277,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/power.png',
     type: 'PowerSupplyUnit',
     rating: 10,
-    cost: 0,
+    price: 0,
   },
   {
     id: 27,
@@ -285,7 +285,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/power.png',
     type: 'PowerSupplyUnit',
     rating: 10,
-    cost: 0,
+    price: 0,
   },
   {
     id: 28,
@@ -293,7 +293,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/power.png',
     type: 'PowerSupplyUnit',
     rating: 10,
-    cost: 0,
+    price: 0,
   },
   {
     id: 29,
@@ -301,7 +301,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/power.png',
     type: 'PowerSupplyUnit',
     rating: 10,
-    cost: 0,
+    price: 0,
   },
   {
     id: 30,
@@ -309,7 +309,7 @@ export const __components: PCComponent[] = [
     images: '../../../assets/power.png',
     type: 'PowerSupplyUnit',
     rating: 10,
-    cost: 0,
+    price: 0,
   },
 ];
 

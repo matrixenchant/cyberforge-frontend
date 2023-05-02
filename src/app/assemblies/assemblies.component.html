@@ -1,6 +1,6 @@
 <section class="assemblies">
-    <app-breadcrumb>Сборки</app-breadcrumb>
-    <app-filter [fields]="filterFields"></app-filter>
+    <app-breadcrumb>{{this.isMyAssemblies ? 'Мои сборки' : 'Сборки'}}</app-breadcrumb>
+    <app-filter [loading]="loading" [fields]="filterFields"></app-filter>
     <div class="assemblies-grid">
         <app-assembly-card *ngFor="let mod of getModifications()" [canLiked]="true" [assembly]="mod"></app-assembly-card>
     </div>

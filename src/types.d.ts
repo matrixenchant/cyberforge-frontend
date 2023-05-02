@@ -1,6 +1,10 @@
 interface AppUser {
-  id: number;
-  username: string;
+  first_name?: string,
+  last_name?: string,
+  email?: string,
+  phone?: string,
+  username: string,
+  modifications: PCModification[]
 }
 
 type PCComponentTypes =
@@ -18,13 +22,13 @@ interface PCComponent {
   name: string;
   type: PCComponentTypes;
   images: string;
-  cost: number;
+  price: number;
   rating: number;
   spec?: PCComponentSpec[];
 }
 
 interface PCModification {
-  id: number;
+  id?: number;
   name: string;
   description?: string;
   author_name: string;
@@ -56,6 +60,7 @@ interface FilterField {
   type?: string;
 }
 
-interface AuthToken {
+interface AuthUser {
   token: string;
+  user: AppUser;
 }
