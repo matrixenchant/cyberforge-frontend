@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { NotificationService } from '../services/notification.service';
 import { DeckComponent } from './deck/deck.component';
 import { __components } from 'src/mockup';
+import { ApiService } from '../services/api.service';
+import { snakeCase } from 'src/utils';
 
 @Component({
   selector: 'app-configurator',
@@ -34,29 +36,35 @@ export class ConfiguratorComponent implements OnInit {
 
   name: string = '';
 
-  assembly = {
-    case: {},
+  assembly: PCModification = {
+    id: 0,
     name: '',
+    description: '',
+    author_name: '',
+    likes: 0,
+    components: __components
   };
 
   types: PCTypes[] = [
-    { type: 'housing', label: 'Корпус', component: null },
-    { type: 'cpu', label: 'CPU', component: null },
-    { type: 'gpu', label: 'Видеокарта', component: null },
-    { type: 'mboard', label: 'Мат. плата', component: null },
-    { type: 'ram', label: 'ОЗУ', component: null },
-    { type: 'memory', label: 'Память', component: null },
-    { type: 'power', label: 'Блок питания', component: null },
+    { type: 'Housing', label: 'Корпус', component: null },
+    { type: 'CPU', label: 'CPU', component: null },
+    { type: 'GPU', label: 'Видеокарта', component: null },
+    { type: 'Motherboard', label: 'Мат. плата', component: null },
+    { type: 'RAM', label: 'ОЗУ', component: null },
+    { type: 'Memory', label: 'Память', component: null },
+    { type: 'PowerSupplyUnit', label: 'Блок питания', component: null },
   ];
   activeType: string | null = null;
 
-  components: PCComponent[] = __components;
+  components: PCComponent[] = [];
 
   deck = [] as any;
 
-  constructor(public notification: NotificationService) {}
+  constructor(public notification: NotificationService, public api: ApiService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    
+  }
 
   saveAssembly() {
     this.notification.notify('Сборка сохранена');
@@ -66,7 +74,7 @@ export class ConfiguratorComponent implements OnInit {
     return this.types[0]
   }
   getRenderTypes() {
-    return this.types.filter(x => x.type !== 'housing')
+    return this.types.filter(x => x.type !== 'Housing')
   }
 
   onSearch(data: any) {
@@ -78,7 +86,7 @@ export class ConfiguratorComponent implements OnInit {
     const byCostMax = (cost: number) => data.costMax ? cost <= data.costMax  : true
     
     this.deckComponent?.changeDeck(
-      this.components.filter(
+      this.assembly.components.filter(
         (x: any) => x.type === type.type &&
         x.id !== type?.component?.id &&
         byName(x.name) &&
@@ -109,7 +117,7 @@ export class ConfiguratorComponent implements OnInit {
       x.type == comp.type ? { ...x, component: comp } : x
     );
     if (this.deckComponent?.deck)
-      this.deckComponent.deck = this.components.filter(
+      this.deckComponent.deck = this.assembly.components.filter(
         (x: any) => x.type === this.activeType && x.id !== comp?.id
       );
   }
@@ -119,16 +127,19 @@ export class ConfiguratorComponent implements OnInit {
   }
 
   changeType(type: string) {
-    console.log(type);
-    
     if (type === this.activeType) return;
     this.activeType = type;
     const component = this.types.filter((x) => x.type === type)[0].component;
 
+    this.api.getListPCComponent(snakeCase(type)).subscribe(x => {
+      console.log('api', x);
+    })
+
     this.deckComponent?.changeDeck(
-      this.components.filter(
+      this.assembly.components.filter(
         (x: any) => x.type === type && x.id !== component?.id
       )
     );
   }
 }
+

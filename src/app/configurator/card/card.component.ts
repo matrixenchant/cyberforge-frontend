@@ -12,8 +12,8 @@ export class CardComponent implements OnInit {
   card: PCComponent | null = {
     id: 0,
     name: 'Карта',
-    image: '../../assets/hero.png',
-    type: 'cpu',
+    images: '../../assets/hero.png',
+    type: 'CPU',
     cost: 0,
     rating: 0,
     spec: []

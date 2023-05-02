@@ -7,14 +7,14 @@
     </div>
     <div class="assembly-card-info">
         <div class="assembly-card-case">
-            <app-case-img [url]="this.assembly.housing?.image"></app-case-img>
+            <app-case-img [url]="getHousingImage()"></app-case-img>
         </div>
         <div class="assembly-card-info-wrap">
             <div class="assembly-card-power">
                 <app-progress-power [value]="getRating()"></app-progress-power>
             </div>
             <div class="assembly-card-components">
-                <app-card *ngFor="let comp of getComponents()" [card]="comp"></app-card>
+                <app-card *ngFor="let comp of assembly.components" [card]="comp"></app-card>
             </div>
             <div class="assembly-card-cost">
                 <h5>{{getCost()}}$</h5>

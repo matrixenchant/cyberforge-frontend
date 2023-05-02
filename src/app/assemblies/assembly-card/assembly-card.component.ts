@@ -18,7 +18,8 @@ export class AssemblyCardComponent implements OnInit {
     id: 0,
     name: '',
     author_name: '',
-    likes: 10
+    likes: 10,
+    components: []
   };
 
   constructor() {}
@@ -29,23 +30,15 @@ export class AssemblyCardComponent implements OnInit {
     this.isLiked = !this.isLiked
   }
 
-  getComponents() {
-    const result = []
-    const mods: any = this.assembly
-    for (let key in mods) {
-      if (['cpu', 'gpu', 'ram', 'memory'].includes(key)) {
-        result.push(mods[key]) 
-      }
-    }
-    return result;
+  getHousingImage() {
+    return this.assembly.components.find(x => x.type === 'Housing')?.images
   }
 
   getRating() {
-    const comps = this.getComponents()
-    const sum = comps.reduce((prev, val) => val.rating + prev, 0)
-    return Math.round(sum / comps.length)
+    const sum = this.assembly.components.reduce((prev, val) => val.rating + prev, 0)
+    return Math.round(sum / this.assembly.components.length)
   }
   getCost() {
-    return this.getComponents().reduce((prev, val) => val.cost + prev, 0)
+    return this.assembly.components.reduce((prev, val) => val.cost + prev, 0)
   }
 }

@@ -33,7 +33,7 @@
       <div class="configurator-main-housing" (click)="changeType('housing')" [ngClass]="{'configurator-main-housing--null': getHousing().component == null}">
         <h5>Выберите корпус</h5>
         <app-card *ngIf="getHousing().component" [card]="getHousing().component"></app-card>
-        <app-case-img [url]="getHousing().component?.image"></app-case-img>
+        <app-case-img [url]="getHousing().component?.images"></app-case-img>
       </div>
       <div class="configurator-main-list">
         <div *ngFor="let comp of getChoicesComponents()" class="configurator-main-list__item">

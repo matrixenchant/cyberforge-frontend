@@ -3,13 +3,23 @@ interface AppUser {
   username: string;
 }
 
+type PCComponentTypes =
+  | 'Housing'
+  | 'Motherboard'
+  | 'PowerSupplyUnit'
+  | 'CPU'
+  | 'GPU'
+  | 'RAM'
+  | 'Memory'
+  | 'Cooling';
+
 interface PCComponent {
   id: number;
   name: string;
-  image: string;
-  type: string;
+  type: PCComponentTypes;
+  images: string;
   cost: number;
-  rating?: number;
+  rating: number;
   spec?: PCComponentSpec[];
 }
 
@@ -20,14 +30,7 @@ interface PCModification {
   author_name: string;
   likes: number;
 
-  housing?: PCComponent
-  cpu?: PCComponent
-  gpu?: PCComponent
-  ram?: PCComponent
-  memory?: PCComponent
-  motherboard?: PCComponent
-  power_supply?: PCComponent
-  cooling?: PCComponent
+  components: PCComponent[];
 }
 
 interface PCComponentSpec {
@@ -41,7 +44,7 @@ interface AppNotification {
 }
 
 interface PCTypes {
-  type: string;
+  type: PCComponentTypes;
   label: string;
   component: null | PCComponent;
 }
@@ -51,4 +54,8 @@ interface FilterField {
   value: string;
   size: `${number}fr`;
   type?: string;
+}
+
+interface AuthToken {
+  token: string;
 }

@@ -13,7 +13,7 @@
         alt=""
       />
       <h6 class="card-inner-label"><glitch loop="random">{{card?.name}}</glitch></h6>
-      <img [src]="card?.image" alt="" class="card-inner-hero" />
+      <img [src]="card?.images" alt="" class="card-inner-hero" />
       <div class="card-inner-price text-light">{{card?.cost}}$</div>
       <div class="card-inner-power">
         <app-progress-power [value]="card?.rating || 0"></app-progress-power>

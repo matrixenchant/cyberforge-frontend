@@ -48,20 +48,46 @@
     }
   }
 
+  &-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: 0.5s ease;
+
+    pointer-events: none;
+    visibility: none;
+  }
+
   &:hover {
     .button-corner {
-        width: 15%;
-        max-width: 30px;
+      width: 15%;
+      max-width: 30px;
 
-        height: 70%;
+      height: 70%;
     }
     background-color: rgba(white, 0.2);
   }
 
   &--text {
-    background-color: rgba(white, 0.0);
+    background-color: rgba(white, 0);
     .button-corner {
       display: none;
+    }
+  }
+  &--loading {
+    .button-label {
+      animation: hideLabel 0.4s ease forwards;
+      @keyframes hideLabel {
+        to {
+          transform: scaleY(0);
+        }
+      }
+    }
+    .button-loading {
+      transform: translate(-50%, -50%) scale(1);
+      pointer-events: all;
+      visibility: auto;
     }
   }
 }
