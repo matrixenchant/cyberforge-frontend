@@ -1,5 +1,8 @@
+import { Location } from '@angular/common';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router';
 import { __modifications } from 'src/mockup';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-assemblies',
@@ -27,11 +30,20 @@ export class AssembliesComponent implements OnInit {
     },
   ];
 
+  isMyAssemblies = false;
+
   modifications: PCModification[] = __modifications;
 
-  constructor() { }
+  constructor(public location: Location, public auth: AuthService) {
+    if (this.location.path() == '/my-assemblies') this.isMyAssemblies = true
+  }
 
   ngOnInit(): void {
+  }
+
+  getModifications() {
+    if (this.isMyAssemblies) return this.modifications.filter(x => x.author_name == this.auth.user.username)
+    return this.modifications
   }
 
 }

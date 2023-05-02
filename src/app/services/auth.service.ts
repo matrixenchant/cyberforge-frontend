@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 import { BASE_URL } from 'src/config';
 import { MatrixTransitionService } from './matrix.transition';
+import { Observable } from 'rxjs';
 import { NotificationService } from './notification.service';
 
 @Injectable({

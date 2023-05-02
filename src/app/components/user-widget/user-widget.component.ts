@@ -19,7 +19,9 @@ export class UserWidgetComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.router.events.subscribe((val) => this.popupActive = false)
+  }
 
   logout() {
     this.popupActive = false;
