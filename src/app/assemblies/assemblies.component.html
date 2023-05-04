@@ -1,7 +1,7 @@
-<section class="assemblies">
-    <app-breadcrumb>{{this.isMyAssemblies ? 'Мои сборки' : 'Сборки'}}</app-breadcrumb>
-    <app-filter [loading]="loading" [fields]="filterFields"></app-filter>
+<section class="assemblies" [ngClass]="{'my': isMyAssemblies}">
+    <app-breadcrumb>{{isMyAssemblies ? 'Мои сборки' : 'Сборки'}}</app-breadcrumb>
+    <app-filter *ngIf="!isMyAssemblies" [loading]="loading" [fields]="filterFields" (onSearch)="searchHandler($event)"></app-filter>
     <div class="assemblies-grid">
-        <app-assembly-card *ngFor="let mod of getModifications()" [canLiked]="true" [assembly]="mod"></app-assembly-card>
+        <app-assembly-card *ngFor="let mod of getModifications()" [isMyAssemblies]="isMyAssemblies" [canLiked]="true" [assembly]="mod"></app-assembly-card>
     </div>
 </section>

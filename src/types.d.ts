@@ -4,7 +4,8 @@ interface AppUser {
   email?: string,
   phone?: string,
   username: string,
-  modifications: PCModification[]
+  modifications: PCModification[];
+  likes: number[]
 }
 
 type PCComponentTypes =
@@ -30,6 +31,7 @@ interface PCComponent {
 interface PCModification {
   id?: number;
   name: string;
+  price: number;
   description?: string;
   author_name: string;
   likes: number;

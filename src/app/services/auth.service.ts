@@ -15,6 +15,7 @@ export class AuthService implements OnInit {
   user: AppUser = {
     username: '',
     modifications: [],
+    likes: []
   };
 
   constructor(

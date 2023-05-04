@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { catchError, throwError } from 'rxjs';
 import { snakeCase } from 'src/utils';
 import { ApiService } from '../services/api.service';
+import { AuthService } from '../services/auth.service';
 import { NotificationService } from '../services/notification.service';
 import { DeckComponent } from './deck/deck.component';
-import { AuthService } from '../services/auth.service';
-import { catchError, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-configurator',
@@ -40,6 +41,7 @@ export class ConfiguratorComponent implements OnInit {
   assembly: PCModification = {
     id: 0,
     name: '',
+    price: 0,
     description: '',
     author_name: '',
     likes: 0,
@@ -62,17 +64,37 @@ export class ConfiguratorComponent implements OnInit {
   deck = [] as any;
 
   loading: boolean = false;
+  isEdit: boolean = false;
 
   constructor(
     public notification: NotificationService,
     public api: ApiService,
     public auth: AuthService,
+    private route: ActivatedRoute
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.route.params.subscribe((params: any) => {
+        if (!params['id']) return;
+        const mod = this.auth.user.modifications.filter(
+          (x) => +(x.id as number) === +params['id']
+        )[0];
+        this.assembly = mod;
+        this.name = mod.name;
+        this.isEdit = true;
+
+        for (let i = 0; i < this.types.length; i++) {
+          const type = this.types[i].type;
+          const comp = mod.components.filter((x) => x.type === type)[0];
+          this.types[i].component = comp;
+        }
+      });
+    }, 500);
+  }
 
   saveAssembly() {
-    if (this.types.some(x => x.component === null)) {
+    if (this.types.some((x) => x.component === null)) {
       return this.notification.notify('Выберите все компоненты');
     }
     if (!this.name) {
@@ -80,32 +102,48 @@ export class ConfiguratorComponent implements OnInit {
     }
 
     const modification: PCModification = {
+      id: this.assembly.id,
       name: this.name,
       description: `Description for ${this.name}`,
       likes: 0,
+      price: this.getCost(),
       author_name: this.auth.user.username,
-      components: this.types.map(x => x.component) as PCComponent[]
-    }
-    
+      components: this.types.map((x) => x.component) as PCComponent[],
+    };
+
     this.loading = true;
-    this.api.addModification(modification)
-    .pipe(
-      catchError((err) => {
-        console.log(err);
-        
-        for (let e in err?.error) {
-          this.notification.notify(err.error[e]);
-        }
+
+    let handler = this.api.addModification(modification);
+    if (this.isEdit) handler = this.api.updateModification(modification);
+
+    handler
+      .pipe(
+        catchError((err) => {
+          console.log(err);
+
+          for (let e in err?.error) {
+            this.notification.notify(err.error[e]);
+          }
+
+          this.loading = false;
+          return throwError(() => err);
+        })
+      )
+      .subscribe((x) => {
+        console.log('success', x);
+        this.notification.notify(
+          this.isEdit ? 'Сборка сохранена' : 'Сборка создана'
+        );
+
+        if (this.isEdit) {
+          this.auth.user.modifications = this.auth.user.modifications.map(mod => {
+            if (mod.id == modification.id) return modification
+            return mod
+          });
+        } else this.auth.user.modifications.push({ ...modification, id: x.id });
 
         this.loading = false;
-        return throwError(() => err);
-      })
-    )
-    .subscribe(x => {
-      console.log(x);
-      this.notification.notify('Сборка сохранена');
-      this.loading = false;
-    })
+      });
   }
 
   getHousing() {
@@ -145,7 +183,7 @@ export class ConfiguratorComponent implements OnInit {
       if (!x.component?.price) return;
       price += +x.component.price;
     });
-    return price || '--';
+    return price;
   }
 
   getChoicesComponents() {
@@ -159,7 +197,7 @@ export class ConfiguratorComponent implements OnInit {
       x.type == comp.type ? { ...x, component: comp } : x
     );
     if (this.deckComponent?.deck)
-      this.deckComponent.deck = this.assembly.components.filter(
+      this.deckComponent.deck = this.components.filter(
         (x: any) => x.type === this.activeType && x.id !== comp?.id
       );
   }
@@ -171,11 +209,14 @@ export class ConfiguratorComponent implements OnInit {
   changeType(type: string) {
     if (type === this.activeType) return;
     this.activeType = type;
-    const component = this.types.filter((x) => x.type === type)[0].component;
+    const selfComp = this.types.filter((x) => x.type === type)[0].component;
 
     this.api.getListPCComponent(snakeCase(type)).subscribe((x) => {
-      this.deckComponent?.changeDeck(x.results as PCComponent[]);
-    });
+      this.components = (x.results as PCComponent[]).filter(
+        (x) => x.id !== selfComp?.id
+      );
 
+      this.deckComponent?.changeDeck(this.components);
+    });
   }
 }

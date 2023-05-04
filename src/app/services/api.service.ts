@@ -19,10 +19,10 @@ export class ApiService {
 
   loading: boolean = false;
 
-  getListModification(): Observable<Pagination> {
+  getListModification(params: string = ''): Observable<Pagination> {
     this.loading = true;
     return this.client.get<Pagination>(
-      `${BASE_URL}/configurator/modifications/`
+      `${BASE_URL}/configurator/modifications/${params}`
     );
   }
   getListPCComponent(type: string): Observable<Pagination> {
@@ -45,9 +45,11 @@ export class ApiService {
       `${BASE_URL}/configurator/${type}/${id}/`
     );
   }
+
   toTypesID(modification: PCModification) {
     return modification.components.reduce((x, val) => ({...x, [snakeCase(val.type)]: val.id}), {})
   }
+  
   addModification(modification: PCModification): Observable<PCModification> {
     let typesID = this.toTypesID(modification);
 
@@ -58,11 +60,13 @@ export class ApiService {
         description: modification.description,
         author_name: modification.author_name,
         likes: modification.likes,
+        price: modification.price,
         cooling: 1,
         ...typesID
       }
     );
   }
+
   updateModification(modification: PCModification): Observable<PCModification> {
     let typesID = this.toTypesID(modification);
     
@@ -72,15 +76,22 @@ export class ApiService {
         name: modification.name,
         description: modification.description,
         author_name: modification.author_name,
-        likes: modification.likes + 1,
+        likes: modification.likes,
+        price: modification.price,
         cooling: 1,
         ...typesID
       }
     );
   }
+
   deleteModification(id: number) {
     return this.client.delete<any>(
       `${BASE_URL}/configurator/modifications/${id}/`
     );
+  }
+  likeModification(id: number) {
+    return this.client.post<any>(
+      `${BASE_URL}/configurator/modifications/like/${id}/`, {}
+    )
   }
 }

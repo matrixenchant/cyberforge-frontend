@@ -20,13 +20,13 @@ export class AssembliesComponent implements OnInit {
     },
     {
       label: 'Цена от',
-      value: 'costMin',
+      value: 'min_price',
       size: '0.5fr',
       type: 'number',
     },
     {
       label: 'Цена до',
-      value: 'costMax',
+      value: 'max_price',
       size: '0.5fr',
     },
   ];
@@ -59,7 +59,7 @@ export class AssembliesComponent implements OnInit {
           })
         )
         .subscribe((data) => {
-          this.modifications = data.results as PCModification[]
+          this.modifications = data.results as PCModification[];
           this.loading = false;
         });
     }
@@ -71,5 +71,32 @@ export class AssembliesComponent implements OnInit {
     }
 
     return this.modifications;
+  }
+
+  searchHandler(e: any) {
+    let params = '?'
+    for (const key in e) {
+      if (e[key]) {
+        params += `${key}=${e[key]}&`
+      }
+    }
+    console.log(params);
+    
+
+    this.loading = true;
+    this.api
+      .getListModification(params)
+      .pipe(
+        catchError((err) => {
+          console.log(err);
+
+          this.loading = false;
+          return throwError(() => err);
+        })
+      )
+      .subscribe((data) => {
+        this.modifications = data.results as PCModification[];
+        this.loading = false;
+      });
   }
 }
