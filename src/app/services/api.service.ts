@@ -51,14 +51,6 @@ export class ApiService {
   addModification(modification: PCModification): Observable<PCModification> {
     let typesID = this.toTypesID(modification);
 
-    console.log(      {
-      name: modification.name,
-      description: modification.description,
-      author_name: modification.author_name,
-      likes: modification.likes,
-      ...typesID
-    });
-
     return this.client.post<PCModification>(
       `${BASE_URL}/configurator/modifications/`,
       {

@@ -19,7 +19,6 @@ import { UserWidgetComponent } from './components/user-widget/user-widget.compon
 import { CardComponent } from './configurator/card/card.component';
 import { ConfiguratorComponent } from './configurator/configurator.component';
 import { DeckComponent } from './configurator/deck/deck.component';
-import { Error404Component } from './error404/error404.component';
 import { HomeNavComponent } from './home/home-nav/home-nav.component';
 import { HomeComponent } from './home/home.component';
 import { MatrixTransitionComponent } from './matrix-transition/matrix-transition.component';
@@ -47,7 +46,6 @@ import { Price } from './pipes/price.pipe';
     NotificationComponent,
     FilterComponent,
     UserWidgetComponent,
-    Error404Component,
     Price
   ],
   imports: [AngularTiltModule, BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],

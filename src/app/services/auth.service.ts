@@ -87,7 +87,7 @@ export class AuthService implements OnInit {
         })
       )
       .subscribe(({ token, user }) => {
-        //this.user = user;
+        this.user = user;
         localStorage.setItem('token', token);
         this.isAuth = true;
         this.transition.redirectTo(['/home']);
