@@ -140,7 +140,7 @@ export class ConfiguratorComponent implements OnInit {
             if (mod.id == modification.id) return modification
             return mod
           });
-        } else this.auth.user.modifications.push({ ...modification, id: x.id });
+        }
 
         this.loading = false;
       });
@@ -212,9 +212,12 @@ export class ConfiguratorComponent implements OnInit {
     const selfComp = this.types.filter((x) => x.type === type)[0].component;
 
     this.api.getListPCComponent(snakeCase(type)).subscribe((x) => {
-      this.components = (x.results as PCComponent[]).filter(
+      console.log(x);
+      
+      this.components = (x.results as PCComponent[])
+      /*.filter(
         (x) => x.id !== selfComp?.id
-      );
+      );*/
 
       this.deckComponent?.changeDeck(this.components);
     });

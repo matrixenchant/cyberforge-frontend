@@ -86,6 +86,6 @@ export class AssemblyCardComponent implements OnInit {
   }
 
   getComponents() {
-    return this.assembly.components.slice(0, 4);
+    return this.assembly.components.slice(1, 5);
   }
 }

@@ -80,7 +80,6 @@ export class AssembliesComponent implements OnInit {
         params += `${key}=${e[key]}&`
       }
     }
-    console.log(params);
     
 
     this.loading = true;
